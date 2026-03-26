@@ -1,10 +1,10 @@
-// Smooth scrolling for navigation links
+// Smooth scrolling only when target anchor exists in current page
 document.querySelectorAll('a[href^="#"]').forEach(anchor => {
     anchor.addEventListener('click', function (e) {
+        const target = document.querySelector(this.getAttribute('href'));
+        if (!target) return;
         e.preventDefault();
-        document.querySelector(this.getAttribute('href')).scrollIntoView({
-            behavior: 'smooth'
-        });
+        target.scrollIntoView({ behavior: 'smooth' });
     });
 });
 
@@ -16,28 +16,6 @@ window.addEventListener('scroll', () => {
     } else {
         nav.classList.remove('nav-scrolled');
     }
-});
-
-// Image lazy loading
-document.addEventListener("DOMContentLoaded", function() {
-    const images = document.querySelectorAll('img[data-src]');
-    const imageOptions = {
-        threshold: 0,
-        rootMargin: "0px 0px 50px 0px"
-    };
-
-    const imageObserver = new IntersectionObserver((entries, observer) => {
-        entries.forEach(entry => {
-            if (entry.isIntersecting) {
-                const img = entry.target;
-                img.src = img.dataset.src;
-                img.classList.add('fade-in');
-                observer.unobserve(img);
-            }
-        });
-    }, imageOptions);
-
-    images.forEach(img => imageObserver.observe(img));
 });
 
 // Contact form handling
@@ -60,7 +38,7 @@ if (contactForm) {
 }
 
 // Project cards hover effect
-document.querySelectorAll('.project').forEach(card => {
+document.querySelectorAll('.project, .project-card').forEach(card => {
     card.addEventListener('mouseenter', function() {
         this.classList.add('hover');
     });

@@ -33,6 +33,18 @@ body {
     background-color: var(--background-color);
 }
 
+.visually-hidden {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    padding: 0;
+    margin: -1px;
+    overflow: hidden;
+    clip: rect(0, 0, 0, 0);
+    white-space: nowrap;
+    border: 0;
+}
+
 /* Enhanced Navigation */
 nav {
     position: fixed;
@@ -42,6 +54,12 @@ nav {
     z-index: 1000;
     padding: 1.2rem 0;
     box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+}
+
+nav.nav-scrolled {
+    background: rgba(255, 255, 255, 0.95);
+    box-shadow: 0 6px 18px rgba(0, 0, 0, 0.08);
+    backdrop-filter: blur(4px);
 }
 
 nav ul {
@@ -1317,6 +1335,34 @@ main {
     letter-spacing: 1px;
     margin-bottom: 1rem;
     color: var(--text-color);
+}
+
+.contact-phone-line {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.6rem;
+}
+
+.whatsapp-link {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.whatsapp-icon {
+    width: 20px;
+    height: 20px;
+    fill: #25d366;
+    transition: transform 0.2s ease;
+}
+
+.whatsapp-link:hover .whatsapp-icon {
+    transform: scale(1.08);
+}
+
+.phone-divider {
+    color: #888;
 }
 
 /* Add smooth scrolling for better navigation */
