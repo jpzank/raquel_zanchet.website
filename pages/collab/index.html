@@ -28,16 +28,18 @@
     <link rel="stylesheet" href="/css/styles.css">
 </head>
 <body>
-    <nav>
+    <a class="skip-link" href="#conteudo">Pular para o conteúdo</a>
+
+    <nav aria-label="Navegação principal">
         <ul>
             <li><a href="/">INÍCIO</a></li>
             <li><a href="/pages/projetos/">PROJETOS</a></li>
-            <li><a href="/pages/collab/">COLLAB</a></li>
+            <li><a href="/pages/collab/" aria-current="page">COLLAB</a></li>
             <li><a href="/pages/contato/">CONTATO</a></li>
         </ul>
     </nav>
 
-    <main class="projects-container">
+    <main class="projects-container" id="conteudo" tabindex="-1">
         <header class="page-header">
             <h1>COLLAB</h1>
             <h2>Parcerias Criativas</h2>
@@ -186,8 +188,8 @@
 
     <footer>
         <div class="footer-contact">
-            <p>Email: raquel@raquelzanchet.com</p>
-            <p>Cel: +55 11 99768-2460</p>
+            <p>Email: <a href="mailto:raquel@raquelzanchet.com" class="contact-link">raquel@raquelzanchet.com</a></p>
+            <p>Cel: <a href="tel:+5511997682460" class="contact-link">+55 (11) 99768-2460</a></p>
         </div>
     </footer>
 </body>

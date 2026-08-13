@@ -1,0 +1,4 @@
+User-agent: *
+Allow: /
+
+Sitemap: https://raquelzanchet.com/sitemap.xml

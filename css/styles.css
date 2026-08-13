@@ -75,6 +75,32 @@ picture > source {
     border-radius: 2px;
 }
 
+/* Atalho para pular a navegação, que se repete em todas as páginas.
+   Fica escondido até receber foco pelo teclado. */
+.skip-link {
+    position: absolute;
+    top: 0;
+    left: 0;
+    z-index: 1100;
+    transform: translateY(-150%);
+    padding: 0.75rem 1.25rem;
+    background: var(--background-color);
+    color: var(--text-color);
+    text-decoration: none;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
+    transition: transform 0.2s ease;
+}
+
+.skip-link:focus {
+    transform: translateY(0);
+}
+
+/* O <main> recebe tabindex="-1" para ser alvo do atalho acima. O foco vai
+   para ele de propósito, mas contornar a página inteira não ajuda ninguém. */
+main[tabindex="-1"]:focus {
+    outline: none;
+}
+
 /* --------------------------------------------------------------------------
    Navegação
    -------------------------------------------------------------------------- */
@@ -115,6 +141,12 @@ nav a {
 
 nav a:hover {
     opacity: 0.7;
+}
+
+/* Marca visualmente a página atual, além do aria-current para leitores de tela */
+nav a[aria-current="page"] {
+    border-bottom: 1px solid currentColor;
+    padding-bottom: 2px;
 }
 
 /* --------------------------------------------------------------------------
@@ -169,7 +201,7 @@ main {
     font-size: var(--font-size-lg);
 }
 
-.about h3 {
+.about h2 {
     color: #333;
     font-weight: var(--font-weight-regular);
     margin: 2rem 0 1rem;
@@ -252,7 +284,7 @@ main {
     opacity: 1;
 }
 
-.card-overlay h3 {
+.card-overlay h2 {
     color: white;
     font-size: 1.8rem;
     font-weight: 300;
@@ -596,8 +628,12 @@ main {
     margin-bottom: 2rem;
 }
 
-.clipping-section h2 {
+/* Era um h2 e herdava o negrito padrão do navegador; virou h4 para corrigir a
+   ordem de títulos, então o peso precisa ser declarado — senão cai no
+   font-weight leve de .project-content h4. */
+.clipping-section h4 {
     font-size: 1.8rem;
+    font-weight: var(--font-weight-bold);
     color: #333;
     letter-spacing: 0.1em;
     margin: 0;
@@ -825,9 +861,16 @@ main {
 
 .social-links {
     display: flex;
-    gap: 1.5rem;
+    gap: 0.5rem;
     margin-top: 1rem;
     justify-content: center;
+}
+
+/* Os ícones têm 24px; o padding leva a área de toque a 44px, o mínimo
+   recomendado pela WCAG 2.2, sem alterar o desenho. */
+.social-links a {
+    display: inline-flex;
+    padding: 10px;
 }
 
 .social-icon {
@@ -852,6 +895,39 @@ main {
 .contact-link:hover {
     color: #333;
     border-bottom-color: #333;
+}
+
+/* --------------------------------------------------------------------------
+   Página 404
+   -------------------------------------------------------------------------- */
+
+.not-found {
+    max-width: 700px;
+    margin: 0 auto;
+    padding: 0 2rem 4rem;
+    text-align: center;
+}
+
+.not-found h1 {
+    font-size: var(--font-size-3xl);
+    font-weight: var(--font-weight-light);
+    letter-spacing: 2px;
+    margin-bottom: 1.5rem;
+    color: var(--text-color);
+}
+
+.not-found p {
+    font-size: 1.1rem;
+    line-height: var(--line-height-relaxed);
+    color: #666;
+    margin-bottom: 2.5rem;
+}
+
+.not-found-links {
+    display: flex;
+    justify-content: center;
+    flex-wrap: wrap;
+    gap: 1rem;
 }
 
 /* --------------------------------------------------------------------------
@@ -918,7 +994,7 @@ footer {
         background: rgba(0, 0, 0, 0.3);
     }
 
-    .card-overlay h3 {
+    .card-overlay h2 {
         font-size: 1.4rem;
     }
 
@@ -1007,6 +1083,14 @@ footer {
 
     .contact-page {
         padding: 0 1rem;
+    }
+
+    .not-found h1 {
+        font-size: 2rem;
+    }
+
+    .not-found-links {
+        flex-direction: column;
     }
 
     .contact-page h1 {
