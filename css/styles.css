@@ -225,7 +225,8 @@ blockquote {
     padding: 0;
 }
 
-.project-card:hover .card-overlay {
+.project-card:hover .card-overlay,
+.project-card:focus-within .card-overlay {
     opacity: 1;
 }
 
