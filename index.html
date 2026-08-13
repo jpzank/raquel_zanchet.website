@@ -6,6 +6,7 @@
     <meta name="description" content="Raquel Zanchet atua com gestão de projetos de turismo regenerativo, retrofit, bioconstrução e parcerias criativas com impacto ambiental e cultural positivo.">
     <title>Raquel Zanchet - Gestão de Projetos</title>
     <link rel="canonical" href="https://raquelzanchet.com/">
+    <link rel="preload" as="image" href="/images/raquel-zanchet-500.webp" type="image/webp" fetchpriority="high">
 
     <meta property="og:type" content="website">
     <meta property="og:site_name" content="Raquel Zanchet">
@@ -42,8 +43,14 @@
     <main>
         <h1 class="visually-hidden">Raquel Zanchet - Gestão de Projetos Sustentáveis</h1>
         <section class="hero">
-            <img src="images/Profile_elegant.jpeg" alt="Raquel Zanchet" class="profile">
-            <img src="images/logorz.png" alt="Logo Raquel Zanchet" class="logo">
+            <picture>
+                <source type="image/webp" srcset="/images/raquel-zanchet-500.webp">
+                <img src="/images/raquel-zanchet.jpg" alt="Retrato de Raquel Zanchet" class="profile" width="500" height="500" fetchpriority="high" decoding="async">
+            </picture>
+            <picture>
+                <source type="image/webp" srcset="/images/logo-raquel-zanchet.webp">
+                <img src="/images/logo-raquel-zanchet.png" alt="Raquel Zanchet Hospitality" class="logo" width="366" height="84" decoding="async">
+            </picture>
         </section>
 
         <section class="about">
@@ -62,7 +69,10 @@
 
             <section class="featured-projects">
                 <div class="project-card">
-                    <img src="images/Projetos-index.jpg" alt="Projetos">
+                    <picture>
+                        <source type="image/webp" sizes="(max-width: 768px) 100vw, 552px" srcset="/images/card-projetos-600.webp 600w, /images/card-projetos-960.webp 960w, /images/card-projetos-1199.webp 1199w">
+                        <img src="/images/card-projetos.jpg" alt="Cabeceira de ferro forjado e travesseiros brancos em um quarto do Zank Hotel Boutique" width="1199" height="352" loading="lazy" decoding="async">
+                    </picture>
                     <div class="card-overlay">
                         <h3>PROJETOS</h3>
                         <a href="/pages/projetos/">Explorar</a>
@@ -70,7 +80,10 @@
                 </div>
 
                 <div class="project-card">
-                    <img src="images/Amazonia Neon.jpg" alt="Collab">
+                    <picture>
+                        <source type="image/webp" sizes="(max-width: 768px) 100vw, 552px" srcset="/images/card-collab-600.webp 600w, /images/card-collab-750.webp 750w">
+                        <img src="/images/card-collab.jpg" alt="Tronco caído na floresta amazônica iluminado por luz vermelha e um filete de neon branco" width="750" height="423" loading="lazy" decoding="async">
+                    </picture>
                     <div class="card-overlay">
                         <h3>COLLAB</h3>
                         <a href="/pages/collab/">Explorar</a>

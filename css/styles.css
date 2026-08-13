@@ -33,6 +33,19 @@ body {
     background-color: var(--background-color);
 }
 
+/* <picture> é só um invólucro para o <source> WebP: não deve criar caixa
+   própria, senão vira o item de grid/flex no lugar da <img> que o CSS estiliza.
+   Com display:contents os filhos sobem para o layout do pai, e o <source> —
+   que o Chromium não esconde por conta própria — precisa sair explicitamente,
+   senão ocupa uma célula do grid. */
+picture {
+    display: contents;
+}
+
+picture > source {
+    display: none;
+}
+
 .visually-hidden {
     position: absolute;
     width: 1px;
