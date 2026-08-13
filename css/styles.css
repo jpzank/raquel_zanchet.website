@@ -249,9 +249,11 @@ main {
     padding: 0 2rem;
 }
 
+/* A altura vem da imagem. O cartão tinha 240px fixos para uma imagem de 180px,
+   sobrando 60px de faixa cinza vazia embaixo — resíduo de um layout anterior
+   que tinha legenda sob a imagem. */
 .featured-projects .project-card {
     width: 100%;
-    height: 240px;
     position: relative;
     overflow: hidden;
     border-radius: 8px;
@@ -267,12 +269,11 @@ main {
     transition: transform 0.6s ease;
 }
 
+/* Cobre o cartão inteiro: como a altura agora é a da imagem, não há mais
+   necessidade de repetir o valor em dois lugares que podem divergir. */
 .featured-projects .project-card .card-overlay {
-    height: 180px;
     position: absolute;
-    top: 0;
-    left: 0;
-    width: 100%;
+    inset: 0;
     background: rgba(0, 0, 0, 0.2);
     display: flex;
     flex-direction: column;
@@ -287,6 +288,14 @@ main {
 .project-card:hover .card-overlay,
 .project-card:focus-within .card-overlay {
     opacity: 1;
+}
+
+/* Zoom mais forte que o dos cartões de Projetos e Collab (1.02), como a home
+   sempre pediu — a regra original era sobrescrita por vir antes na folha.
+   Acompanha o overlay no :focus-within para quem navega por teclado. */
+.featured-projects .project-card:hover img,
+.featured-projects .project-card:focus-within img {
+    transform: scale(1.05);
 }
 
 .card-overlay h2 {
@@ -987,10 +996,6 @@ footer {
         gap: 2rem;
         padding: 2rem;
         margin: 2rem auto;
-    }
-
-    .featured-projects .project-card {
-        height: 200px;
     }
 
     /* No toque não existe hover, então o overlay fica sempre visível */
