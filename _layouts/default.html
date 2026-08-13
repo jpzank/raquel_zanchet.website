@@ -20,10 +20,15 @@
     <meta property="og:url" content="{{ page.url | absolute_url }}">
     <meta property="og:title" content="{{ page.title }}">
     <meta property="og:description" content="{{ page.og_description | default: page.description }}">
-    <meta property="og:image" content="{{ '/images/og-image.jpg' | absolute_url }}">
+    {%- comment -%}
+      Imagem que aparece quando o link é compartilhado. O padrão é o retrato da
+      Raquel, o mesmo da home. Uma página pode trocar declarando og_image e
+      og_image_alt no seu front matter.
+    {%- endcomment -%}
+    <meta property="og:image" content="{{ page.og_image | default: '/images/og-raquel.jpg' | absolute_url }}">
     <meta property="og:image:width" content="1200">
     <meta property="og:image:height" content="630">
-    <meta property="og:image:alt" content="Vista aérea de um rio cortando a floresta amazônica no Jardim da Amazônia Lodge">
+    <meta property="og:image:alt" content="{{ page.og_image_alt | default: 'Retrato de Raquel Zanchet' }}">
     <meta name="twitter:card" content="summary_large_image">
 {% endunless %}
 
