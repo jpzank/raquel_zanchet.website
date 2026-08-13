@@ -1,4 +1,4 @@
-// Smooth scrolling only when target anchor exists in current page
+// Rolagem suave apenas quando a âncora existe na página atual
 document.querySelectorAll('a[href^="#"]').forEach(anchor => {
     anchor.addEventListener('click', function (e) {
         const target = document.querySelector(this.getAttribute('href'));
@@ -13,12 +13,21 @@ document.querySelectorAll('a[href^="#"]').forEach(anchor => {
     });
 });
 
-// Navigation menu highlight on scroll
-window.addEventListener('scroll', () => {
-    const nav = document.querySelector('nav');
-    if (window.scrollY > 50) {
-        nav.classList.add('nav-scrolled');
-    } else {
-        nav.classList.remove('nav-scrolled');
-    }
-});
+// Sombra da navegação ao rolar.
+// O listener é passivo para não bloquear a rolagem, e a troca de classe é
+// agrupada num requestAnimationFrame — o handler dispara dezenas de vezes por
+// segundo, mas só há um repinte por quadro para aproveitar.
+const nav = document.querySelector('nav');
+
+if (nav) {
+    let agendado = false;
+
+    window.addEventListener('scroll', () => {
+        if (agendado) return;
+        agendado = true;
+        requestAnimationFrame(() => {
+            nav.classList.toggle('nav-scrolled', window.scrollY > 50);
+            agendado = false;
+        });
+    }, { passive: true });
+}
