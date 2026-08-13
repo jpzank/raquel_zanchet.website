@@ -1,0 +1,12 @@
+title: Raquel Zanchet
+url: https://raquelzanchet.com
+lang: pt-BR
+
+# O site é HTML estático: nada de blog, coleções ou processamento de Markdown.
+# O Jekyll entra apenas para que a navegação e o rodapé existam num lugar só.
+exclude:
+  - README.md
+  - .gitignore
+
+# As URLs vêm da própria estrutura de pastas (pages/projetos/index.html ->
+# /pages/projetos/), então não há permalink a configurar.
