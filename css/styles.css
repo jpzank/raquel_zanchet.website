@@ -2007,6 +2007,81 @@ footer {
 }
 
 /* --------------------------------------------------------------------------
+   Impressão
+   --------------------------------------------------------------------------
+
+   A página de serviços é a que mais tem chance de virar papel ou PDF, para
+   circular dentro de um empreendimento. Sem estas regras ela saía com a
+   navegação fixa carimbada sobre o texto em toda folha, porque position:
+   fixed repete o elemento em cada página impressa, e com um vão branco de
+   meia página onde estão as fotos, que não carregam na impressão por serem
+   loading="lazy".
+
+   A saída é tratar a impressão como o que ela é: um documento de texto. Sai
+   tudo que é navegação ou ornamento, fica o conteúdo e como falar com ela. */
+
+@media print {
+    .nav-principal,
+    .indice,
+    .skip-link,
+    .trio-fotos,
+    .faixa-foto,
+    .destaques,
+    .apresentacao img,
+    .hero-acoes,
+    .fases-link,
+    .convite .botao,
+    .project-links,
+    .project-details .buttons {
+        display: none;
+    }
+
+    main,
+    .projects-container {
+        max-width: none;
+        padding: 0;
+    }
+
+    body {
+        font-size: 11pt;
+        color: #000;
+    }
+
+    /* Só blocos que cabem numa folha. Aplicado a .servico, que ocupa mais de
+       uma página, o avoid empurrava a seção inteira para a folha seguinte e
+       deixava metade da primeira em branco: o remédio saía pior. */
+    .entregas li,
+    .linha-tempo li,
+    .mention-item,
+    .servico-cab,
+    .project-details p {
+        break-inside: avoid;
+    }
+
+    h1, h2, h3, h4 {
+        break-after: avoid;
+    }
+
+    /* Num papel o endereço não é clicável, então o destino vai junto. Só
+       para links externos: caminho interno impresso é ruído. */
+    main a[href^="http"]::after {
+        content: " (" attr(href) ")";
+        font-size: 9pt;
+        color: #555;
+        word-break: break-all;
+    }
+
+    footer {
+        border-top: 1px solid #999;
+        margin-top: var(--e-6);
+    }
+
+    .rodape-nav {
+        display: none;
+    }
+}
+
+/* --------------------------------------------------------------------------
    Preferência por menos movimento
    -------------------------------------------------------------------------- */
 
