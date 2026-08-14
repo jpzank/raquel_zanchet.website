@@ -603,6 +603,41 @@ main {
 }
 
 /* --------------------------------------------------------------------------
+   Formato de caso, na página de projetos
+   -------------------------------------------------------------------------- */
+
+/* Contexto, papel, trabalho e resultado, sempre nesta ordem, para que os
+   projetos possam ser comparados entre si. Os rótulos usam o mesmo desenho
+   dos subgrupos da página de serviços. */
+.caso {
+    margin: 1.5rem 0 2rem;
+}
+
+.caso .caso-rotulo {
+    font-size: var(--font-size-sm);
+    font-weight: var(--font-weight-medium);
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--marca);
+    margin: 1.6rem 0 0.4rem;
+}
+
+.caso .caso-rotulo:first-child {
+    margin-top: 0;
+}
+
+.caso p {
+    margin-bottom: 0;
+}
+
+.mention-papel {
+    font-size: var(--font-size-sm);
+    letter-spacing: 0.04em;
+    color: var(--marca);
+    margin-bottom: 0.6rem;
+}
+
+/* --------------------------------------------------------------------------
    Bloco de texto corrido, usado em serviços e sobre
    -------------------------------------------------------------------------- */
 
