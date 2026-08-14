@@ -583,6 +583,62 @@ main,
 }
 
 /* --------------------------------------------------------------------------
+   Faixas de imagem
+   --------------------------------------------------------------------------
+
+   As fotos ficam contidas na largura do site, e não sangram de ponta a ponta.
+   Não é escolha estética: os arquivos têm 1600px de largura, que é exportação
+   para web e não original de câmera. Numa faixa de largura total em monitor
+   grande a imagem sobe de escala e amolece. Contida em 1120px ela ainda entra
+   com folga, e no trio cada foto recebe cerca de 350px a partir de uma origem
+   de 1066, o que dá nitidez até em tela retina.
+
+   Se os originais aparecerem, a sangria de ponta a ponta passa a ser
+   possível, e com ela a faixa escura entre duas imagens. */
+
+.faixa-foto {
+    margin: var(--e-9) auto;
+}
+
+.faixa-foto img {
+    width: 100%;
+    height: auto;
+    display: block;
+}
+
+.trio-fotos {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: var(--e-4);
+    margin: var(--e-8) auto;
+}
+
+.trio-fotos img {
+    width: 100%;
+    height: auto;
+    display: block;
+}
+
+/* Em coluna estreita, três retratos lado a lado ficam com menos de 120px e
+   não se lê nada em nenhum deles. Duas colunas, e a terceira ocupa a linha
+   de baixo inteira, o que dá um respiro em vez de uma órfã espremida.
+
+   O seletor precisa do picture: `.trio-fotos img:last-child` casava com as
+   três imagens, porque cada img é o último filho do seu próprio <picture>.
+   As três ganhavam a linha inteira e a grade virava uma coluna só. */
+@media (max-width: 700px) {
+    .trio-fotos {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+
+    .trio-fotos > picture:last-child img {
+        grid-column: 1 / -1;
+        max-height: 60vh;
+        object-fit: cover;
+    }
+}
+
+/* --------------------------------------------------------------------------
    Home, quem conduz o trabalho
    --------------------------------------------------------------------------
 
