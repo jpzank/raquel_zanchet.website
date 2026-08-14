@@ -928,6 +928,58 @@ main,
     max-width: 60ch;
 }
 
+/* Viúvas: última linha de parágrafo com uma palavra sozinha. Havia cinco,
+   uma em Serviços e quatro em Sobre. Nenhuma auditoria pega, porque nada
+   está quebrado, mas o parágrafo termina parecendo acidente.
+
+   text-wrap: pretty faz o navegador puxar uma palavra da penúltima linha
+   para a última em vez de deixar a órfã. Já estava em três lugares soltos
+   da folha, justamente os três que não apresentavam o defeito. Onde o
+   navegador não suporta, a quebra volta ao normal e nada piora.
+
+   balance é para título: distribui as linhas em comprimentos parecidos, o
+   que serve a duas ou três linhas curtas e não a um parágrafo. */
+.project-content > p,
+.caso p,
+.project-development p,
+.clipping-intro p,
+.mention-item p,
+.servico-resumo,
+.servico-nota,
+.lt-corpo p,
+.bloco-texto p,
+.page-header .intro-text,
+.apresentacao p,
+.area p,
+.fase p,
+.quotes p {
+    text-wrap: pretty;
+}
+
+.project-content h3,
+.page-header h2,
+.mention-item h3,
+.lt-corpo h4 {
+    text-wrap: balance;
+}
+
+/* Item de lista e texto centralizado curto pedem balance, não pretty.
+
+   Medi as duas: neste Chromium, pretty é declarada como suportada e não
+   muda uma quebra sequer, enquanto balance transforma 248/110px em
+   184/173px num item de duas linhas. No celular, doze itens de entrega em
+   Serviços terminavam com uma palavra sozinha na segunda linha, ao lado de
+   um traço marcador que torna a sobra ainda mais visível.
+
+   Vale para trecho de poucas linhas. Em parágrafo corrido, balance
+   encurtaria todas as linhas por igual, que é pior que a viúva. */
+.entregas li,
+.convite p,
+.prova-rotulo,
+.servico-sub {
+    text-wrap: balance;
+}
+
 /* --------------------------------------------------------------------------
    Formato de caso, na página de projetos
    -------------------------------------------------------------------------- */
