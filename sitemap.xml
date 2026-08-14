@@ -5,12 +5,20 @@
     <priority>1.0</priority>
   </url>
   <url>
+    <loc>https://raquelzanchet.com/pages/servicos/</loc>
+    <priority>0.9</priority>
+  </url>
+  <url>
     <loc>https://raquelzanchet.com/pages/projetos/</loc>
     <priority>0.8</priority>
   </url>
   <url>
     <loc>https://raquelzanchet.com/pages/collab/</loc>
     <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://raquelzanchet.com/pages/sobre/</loc>
+    <priority>0.7</priority>
   </url>
   <url>
     <loc>https://raquelzanchet.com/pages/contato/</loc>

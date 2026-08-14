@@ -11,7 +11,7 @@
     <link rel="canonical" href="{{ page.url | absolute_url }}">
 {%- endif %}
 {%- if page.preload_image %}
-    <link rel="preload" as="image" href="{{ page.preload_image }}" type="image/webp" fetchpriority="high">
+    <link rel="preload" as="image" href="{{ page.preload_image }}" type="{{ page.preload_image_type | default: 'image/webp' }}" fetchpriority="high">
 {%- endif %}
 {% unless page.noindex %}
     <meta property="og:type" content="website">

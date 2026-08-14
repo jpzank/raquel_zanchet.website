@@ -132,11 +132,16 @@ nav.nav-scrolled {
     backdrop-filter: blur(4px);
 }
 
+/* São seis itens. O gap de 3rem cabia em quatro e passava a largura da tela
+   com seis, então diminuiu, e a lista pode quebrar em duas linhas quando não
+   couber. Onde ela quebra, o padding-top do main aumenta junto, senão a
+   navegação fixa cobre o começo do conteúdo. */
 nav ul {
     display: flex;
     justify-content: center;
+    flex-wrap: wrap;
     list-style: none;
-    gap: 3rem;
+    gap: 0.5rem 2.1rem;
     margin: 0;
     padding: 0 1rem;
 }
@@ -380,6 +385,32 @@ main {
     gap: 2.5rem 2rem;
 }
 
+/* Cinco áreas. Com auto-fit o número de colunas caía para quatro por poucos
+   pixels e sobrava uma órfã, então as quebras são declaradas: cinco lado a
+   lado, depois três, depois duas, depois uma. */
+.areas-cinco {
+    grid-template-columns: repeat(5, minmax(0, 1fr));
+    gap: 2.5rem 1.5rem;
+}
+
+@media (max-width: 1040px) {
+    .areas-cinco {
+        grid-template-columns: repeat(3, minmax(0, 1fr));
+    }
+}
+
+@media (max-width: 700px) {
+    .areas-cinco {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+}
+
+@media (max-width: 420px) {
+    .areas-cinco {
+        grid-template-columns: minmax(0, 1fr);
+    }
+}
+
 .area-icone {
     width: 28px;
     height: 28px;
@@ -398,6 +429,231 @@ main {
 
 .area p {
     font-size: 0.9rem;
+    line-height: var(--line-height-relaxed);
+    color: #666;
+}
+
+/* --------------------------------------------------------------------------
+   As três fases, na home
+   -------------------------------------------------------------------------- */
+
+.fases {
+    max-width: 1000px;
+    margin: 5rem auto;
+    padding: 0 2rem;
+}
+
+.fases > h2 {
+    font-size: var(--font-size-sm);
+    font-weight: var(--font-weight-regular);
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: #666;
+    text-align: center;
+    margin-bottom: 2.5rem;
+}
+
+.fases-grade {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(15rem, 1fr));
+    gap: 2.5rem 2.5rem;
+}
+
+/* A numeração aqui carrega informação: as fases acontecem nesta ordem. */
+.fase-num {
+    display: block;
+    font-size: var(--font-size-sm);
+    letter-spacing: 0.12em;
+    color: var(--marca);
+    margin-bottom: 0.6rem;
+}
+
+.fase h3 {
+    font-size: var(--font-size-base);
+    font-weight: var(--font-weight-medium);
+    color: var(--text-color);
+    margin-bottom: 0.5rem;
+    letter-spacing: 0.01em;
+}
+
+.fase p {
+    font-size: 0.9rem;
+    line-height: var(--line-height-relaxed);
+    color: #666;
+}
+
+.fases-link {
+    text-align: center;
+    margin-top: 2.75rem;
+}
+
+/* --------------------------------------------------------------------------
+   Página de serviços
+   -------------------------------------------------------------------------- */
+
+.servicos {
+    max-width: 780px;
+    margin: 0 auto;
+}
+
+.servico {
+    padding-top: 2.5rem;
+    margin-top: 2.5rem;
+    border-top: 1px solid #e4e4e4;
+}
+
+.servico:first-child {
+    border-top: 0;
+    margin-top: 0;
+    padding-top: 0;
+}
+
+.servico-cab {
+    display: flex;
+    align-items: baseline;
+    gap: 1.1rem;
+    margin-bottom: 1rem;
+}
+
+.servico-num {
+    flex: none;
+    font-size: 1.05rem;
+    letter-spacing: 0.08em;
+    color: var(--marca);
+}
+
+.servico-cab h3 {
+    font-family: var(--font-display);
+    font-size: 1.45rem;
+    font-weight: var(--font-weight-regular);
+    color: var(--text-color);
+    line-height: 1.25;
+    margin-bottom: 0.3rem;
+}
+
+.servico-sub {
+    font-size: var(--font-size-sm);
+    letter-spacing: 0.05em;
+    color: #666;
+}
+
+.servico-resumo {
+    font-size: 1.02rem;
+    line-height: var(--line-height-relaxed);
+    color: #555;
+    margin-bottom: 1.2rem;
+}
+
+.entregas {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+
+.entregas li {
+    position: relative;
+    padding: 0.55rem 0 0.55rem 1.2rem;
+    border-bottom: 1px solid #eee;
+    font-size: 0.95rem;
+    line-height: var(--line-height-relaxed);
+    color: #555;
+}
+
+.entregas li:last-child {
+    border-bottom: 0;
+}
+
+/* O traço acompanha a primeira linha do item: o padding de cima mais metade
+   da altura de linha o deixam na altura do meio do texto, não do topo. */
+.entregas li::before {
+    content: "";
+    position: absolute;
+    left: 0;
+    top: calc(0.55rem + 0.5 * var(--line-height-relaxed) * 1em);
+    width: 6px;
+    height: 1px;
+    background: var(--marca);
+}
+
+/* --------------------------------------------------------------------------
+   Bloco de texto corrido, usado em serviços e sobre
+   -------------------------------------------------------------------------- */
+
+.bloco-texto {
+    max-width: 780px;
+    margin: 3.5rem auto;
+}
+
+.bloco-texto h3 {
+    font-family: var(--font-display);
+    font-size: 1.25rem;
+    font-weight: var(--font-weight-regular);
+    color: var(--text-color);
+    margin: 2.25rem 0 0.7rem;
+}
+
+.bloco-texto h3:first-child {
+    margin-top: 0;
+}
+
+/* Quando o bloco existe só para encabeçar o que vem depois, ele não deve
+   deixar 3,5rem de vão entre o título e o conteúdo que ele nomeia. */
+.bloco-texto.encabeca {
+    margin-bottom: 1.25rem;
+}
+
+.bloco-texto p {
+    font-size: 1.02rem;
+    line-height: var(--line-height-relaxed);
+    color: #555;
+    margin-bottom: 1rem;
+}
+
+/* --------------------------------------------------------------------------
+   Página sobre
+   -------------------------------------------------------------------------- */
+
+.sobre-cab .retrato {
+    width: 170px;
+    height: 170px;
+    border-radius: 50%;
+    display: block;
+    margin: 0 auto 1.75rem;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+}
+
+.linha-tempo {
+    list-style: none;
+    max-width: 780px;
+    margin: 0 auto 3.5rem;
+    padding: 0;
+}
+
+.linha-tempo li {
+    display: flex;
+    gap: 1.6rem;
+    padding: 1.3rem 0;
+    border-top: 1px solid #eee;
+}
+
+.lt-ano {
+    flex: none;
+    width: 3.6rem;
+    font-size: 1.05rem;
+    color: var(--marca);
+    font-variant-numeric: tabular-nums;
+    letter-spacing: 0.03em;
+}
+
+.lt-corpo h4 {
+    font-size: var(--font-size-base);
+    font-weight: var(--font-weight-medium);
+    color: var(--text-color);
+    margin-bottom: 0.35rem;
+}
+
+.lt-corpo p {
+    font-size: 0.95rem;
     line-height: var(--line-height-relaxed);
     color: #666;
 }
@@ -601,8 +857,13 @@ main {
     color: var(--marca);
 }
 
+/* O minmax(0, 1fr) existe para conter o cartão. Item de grid nasce com
+   min-width: auto, então o conteúdo mais largo que não quebra empurra a
+   coluna para além da tela. Abaixo de 360px isso estourava a página em 66px,
+   sem barra de rolagem que denunciasse. */
 .projects-grid {
     display: grid;
+    grid-template-columns: minmax(0, 1fr);
     gap: 4rem;
     margin-top: 4rem;
 }
@@ -878,9 +1139,12 @@ main {
     margin: 0 1rem;
 }
 
+/* O min(250px, 100%) evita que a coluna fique maior que o espaço disponível.
+   Um minmax(250px, 1fr) puro não encolhe abaixo de 250px, e em telas de 320px
+   a galeria passava da borda. */
 .clipping-section .gallery {
     display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    grid-template-columns: repeat(auto-fit, minmax(min(250px, 100%), 1fr));
     gap: 2rem;
     margin: 2rem 0;
 }
@@ -1199,6 +1463,19 @@ footer {
         gap: 2rem 1.5rem;
     }
 
+    .fases {
+        margin: 3.5rem auto;
+        padding: 0 1rem;
+    }
+
+    .fases-grade {
+        gap: 2rem;
+    }
+
+    .linha-tempo li {
+        gap: 1.1rem;
+    }
+
     .convite {
         margin: 3.5rem auto 1.5rem;
         padding: 0 1rem;
@@ -1248,10 +1525,18 @@ footer {
         font-size: 0.9rem;
     }
 
+    /* Empilhar em coluna servia para as duas categorias de Projetos, mas em
+       Serviços são cinco e viravam uma torre que empurrava o conteúdo para
+       fora da primeira tela. Em linha com quebra funciona nos dois casos. */
     .categories {
-        flex-direction: column;
-        align-items: center;
-        gap: 1.5rem;
+        gap: 0.9rem 1.4rem;
+        margin: 2rem 0;
+    }
+
+    .categories li {
+        font-size: 0.92rem;
+        letter-spacing: 1px;
+        padding-bottom: 0.3rem;
     }
 
     .project-content {
@@ -1335,16 +1620,25 @@ footer {
     }
 }
 
-/* Abaixo de 380px os quatro itens de navegação não cabiam e eram cortados
-   nas duas pontas, sem gerar barra de rolagem que denunciasse o corte. */
-@media (max-width: 380px) {
+/* Abaixo de 560px os seis itens de navegação não cabem em uma linha. Eles
+   quebram em duas, e o main ganha altura de recuo equivalente para que a
+   navegação fixa não cubra o começo do conteúdo. */
+@media (max-width: 560px) {
     nav ul {
-        gap: 1rem;
+        gap: 0.45rem 1.15rem;
     }
 
     nav a {
         font-size: 0.85rem;
         letter-spacing: 0.5px;
+    }
+
+    main {
+        padding-top: 128px;
+    }
+
+    .projects-container {
+        padding-top: 128px;
     }
 }
 
