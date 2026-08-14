@@ -323,9 +323,11 @@ main,
     margin-bottom: var(--e-4);
 }
 
+/* Um degrau maior que os outros textos de abertura. A serifa tem altura-x
+   menor que a sans no mesmo corpo, e em 18px o texto perdia presença logo
+   abaixo de um título de 44px. */
 .hero-sub {
-    font-size: var(--t-lg);
-    line-height: var(--line-height-relaxed);
+    font-size: var(--t-xl);
     color: var(--tinta-suave);
     max-width: 44ch;
     margin: 0 auto var(--e-6);
@@ -408,6 +410,77 @@ main,
 
 .botao-vazio:hover {
     background-color: var(--marca-suave);
+}
+
+/* --------------------------------------------------------------------------
+   Abertura de seção
+   --------------------------------------------------------------------------
+
+   Fio curto de acento, rótulo em caixa alta espaçada, título. O fio é o
+   elemento que mais identifica uma página como desenhada, e é pequeno o
+   bastante para o vermelho continuar sendo acento: 40px de traço não competem
+   com nada, ao contrário de dez subtítulos coloridos.
+
+   Vale só para abertura de seção e de página. Rótulo de subgrupo, dentro de
+   uma seção, continua sem fio, senão a página vira uma sequência de traços. */
+
+.areas > h2::before,
+.fases > h2::before,
+.honorable-mentions h2::before,
+.page-header h1::before {
+    content: "";
+    display: block;
+    width: 40px;
+    height: 1px;
+    background: var(--marca);
+    margin: 0 auto var(--e-5);
+}
+
+/* --------------------------------------------------------------------------
+   Texto de abertura
+   --------------------------------------------------------------------------
+
+   O primeiro parágrafo de uma seção vai na serifa dos títulos, e o resto na
+   sans. As duas famílias deixam de ser "título e corpo" e passam a marcar
+   qual parágrafo carrega o argumento: o olho entende a hierarquia sem que
+   nada precise ficar maior nem colorido. */
+
+.hero-sub,
+.page-header .intro-text,
+.servico-resumo,
+.convite p,
+.apresentacao p {
+    font-family: var(--font-display);
+    font-size: var(--t-lg);
+    line-height: 1.65;
+    color: var(--tinta);
+}
+
+/* --------------------------------------------------------------------------
+   Link de texto
+   --------------------------------------------------------------------------
+
+   Alternativa mais quieta ao botão contornado, para ação secundária. O botão
+   cheio fica reservado ao convite para conversar, que é a única ação que a
+   página realmente pede. */
+
+.link-texto {
+    display: inline-block;
+    font-family: var(--font-display);
+    font-size: var(--t-md);
+    color: var(--tinta);
+    text-decoration: none;
+    padding-bottom: var(--e-2);
+    border-bottom: 1px solid var(--marca);
+    transition: color 0.3s ease;
+}
+
+.link-texto::after {
+    content: " \2192";
+}
+
+.link-texto:hover {
+    color: var(--marca);
 }
 
 /* --------------------------------------------------------------------------
@@ -507,6 +580,36 @@ main,
 .fases-link {
     text-align: center;
     margin-top: var(--e-7);
+}
+
+/* --------------------------------------------------------------------------
+   Home, quem conduz o trabalho
+   --------------------------------------------------------------------------
+
+   O retrato volta para a home. Numa consultoria de uma pessoa só, quem
+   contrata quer ver com quem vai falar antes de mandar mensagem, e a página
+   ia da lista de serviços direto para os projetos sem mostrar ninguém.
+
+   O retrato fica em quadrado, e não no círculo da página Sobre: numa página
+   feita de retângulos, o círculo é o único elemento que destoa. */
+
+.apresentacao {
+    display: grid;
+    grid-template-columns: 300px minmax(0, 1fr);
+    gap: var(--e-7);
+    align-items: center;
+    margin: var(--e-9) auto;
+}
+
+.apresentacao img {
+    width: 100%;
+    height: auto;
+    display: block;
+}
+
+.apresentacao p {
+    max-width: 46ch;
+    margin-bottom: var(--e-5);
 }
 
 /* --------------------------------------------------------------------------
@@ -1023,23 +1126,41 @@ main,
 }
 
 /* Citações dentro dos projetos. Eram um bloco cinza com canto arredondado
-   dentro de um cartão branco, caixa dentro de caixa. Um fio à esquerda faz o
-   mesmo trabalho de separar. */
+   dentro de um cartão branco, caixa dentro de caixa.
+
+   Agora: aspa grande em tinta cheia, barra de acento à esquerda e o texto em
+   itálico serifado. A aspa fica dentro do bloco, e não pendurada na margem
+   como no site que serviu de referência, porque em tela de celular não sobra
+   margem para pendurar nada. */
 .quotes {
     padding-left: var(--e-5);
-    border-left: 1px solid var(--fio);
+    border-left: 2px solid var(--marca);
     margin: var(--e-8) 0;
 }
 
+/* Único tamanho fora da escala de tipo, e de propósito: isto é ornamento
+   desenhado, não texto. A escala continua valendo para tudo que se lê. */
+.quotes::before {
+    content: "\201C";
+    display: block;
+    font-family: var(--font-display);
+    font-size: 3.5rem;
+    line-height: 0.7;
+    color: var(--tinta);
+    margin-bottom: var(--e-3);
+}
+
 .quotes p {
+    font-family: var(--font-display);
     font-style: italic;
     margin-bottom: var(--e-5);
-    font-size: var(--t-lg);
-    line-height: var(--line-height-relaxed);
+    font-size: var(--t-xl);
+    line-height: 1.5;
     color: var(--tinta);
 }
 
 .quotes .author {
+    font-family: var(--font-primary);
     font-style: normal;
     color: var(--tinta-suave);
     font-size: var(--t-xs);
@@ -1559,6 +1680,18 @@ footer {
 
     .destaques {
         grid-template-columns: minmax(0, 1fr);
+    }
+
+    /* O retrato passa para cima do texto e encolhe: em coluna estreita, 300px
+       de foto empurrariam o parágrafo para fora da primeira tela. */
+    .apresentacao {
+        grid-template-columns: minmax(0, 1fr);
+        gap: var(--e-5);
+        margin: var(--e-7) auto;
+    }
+
+    .apresentacao img {
+        max-width: 220px;
     }
 
     .linha-tempo li {
