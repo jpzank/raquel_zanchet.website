@@ -1,7 +1,54 @@
+{%- comment -%}
+  O rodapé eram duas linhas de texto centralizado, o que deixava o fim de toda
+  página sem nada que sustentasse a saída. Agora ele fecha o site: a marca, por
+  onde ir, e como falar com ela.
+
+  Sem títulos de seção: os rótulos são <p class="rodape-rotulo"> em vez de h2
+  para não introduzir um nível de cabeçalho depois dos h3 e h4 do conteúdo, o
+  que confundiria a leitura da estrutura da página.
+{%- endcomment -%}
 {%- assign idioma = page.lang | default: 'pt-BR' -%}
 <footer>
-    <div class="footer-contact">
-        <p>{% if idioma == 'en' %}Email{% else %}Email{% endif %}: <a href="mailto:raquel@raquelzanchet.com" class="contact-link">raquel@raquelzanchet.com</a></p>
-        <p>{% if idioma == 'en' %}Phone{% else %}Cel{% endif %}: <a href="tel:+5511997682460" class="contact-link">+55 (11) 99768-2460</a></p>
+    <div class="rodape-grade">
+        <div class="rodape-marca">
+            <img src="/images/logo-raquel-zanchet.svg" alt="Raquel Zanchet Hospitality" width="366" height="84" loading="lazy" decoding="async">
+{%- if idioma == 'en' %}
+            <p>Hotel product development, from concept to operation.</p>
+{%- else %}
+            <p>Desenvolvimento de produto hoteleiro, do conceito à operação.</p>
+{%- endif %}
+        </div>
+
+        <nav class="rodape-nav" aria-label="{% if idioma == 'en' %}Footer{% else %}Rodapé{% endif %}">
+            <p class="rodape-rotulo">{% if idioma == 'en' %}Site{% else %}Site{% endif %}</p>
+            <ul>
+{%- if idioma == 'en' %}
+                <li><a href="/en/">Home</a></li>
+                <li><a href="/en/services/">Services</a></li>
+                <li><a href="/en/projects/">Projects</a></li>
+                <li><a href="/en/collab/">Collab</a></li>
+                <li><a href="/en/about/">About</a></li>
+                <li><a href="/en/contact/">Contact</a></li>
+{%- else %}
+                <li><a href="/">Início</a></li>
+                <li><a href="/pages/servicos/">Serviços</a></li>
+                <li><a href="/pages/projetos/">Projetos</a></li>
+                <li><a href="/pages/collab/">Collab</a></li>
+                <li><a href="/pages/sobre/">Sobre</a></li>
+                <li><a href="/pages/contato/">Contato</a></li>
+{%- endif %}
+            </ul>
+        </nav>
+
+        <div class="rodape-contato">
+            <p class="rodape-rotulo">{% if idioma == 'en' %}Contact{% else %}Contato{% endif %}</p>
+            <p><a href="mailto:raquel@raquelzanchet.com" class="contact-link">raquel@raquelzanchet.com</a></p>
+            <p><a href="tel:+5511997682460" class="contact-link">+55 (11) 99768-2460</a></p>
+            <div class="social-links">
+                {% include redes.html %}
+            </div>
+        </div>
     </div>
+
+    <p class="rodape-fim">&copy; {{ site.time | date: '%Y' }} Raquel Zanchet</p>
 </footer>

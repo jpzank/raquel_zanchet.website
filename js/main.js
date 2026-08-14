@@ -17,7 +17,9 @@ document.querySelectorAll('a[href^="#"]').forEach(anchor => {
 // O listener é passivo para não bloquear a rolagem, e a troca de classe é
 // agrupada num requestAnimationFrame — o handler dispara dezenas de vezes por
 // segundo, mas só há um repinte por quadro para aproveitar.
-const nav = document.querySelector('nav');
+// Precisa da classe: querySelector('nav') pegaria tambem o <nav> do rodape
+// se um dia ele viesse antes na marcacao.
+const nav = document.querySelector('.nav-principal');
 
 if (nav) {
     let agendado = false;

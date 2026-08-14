@@ -4,7 +4,7 @@
   outro idioma, usando o alt_url declarado no front matter.
 {%- endcomment -%}
 {%- assign idioma = page.lang | default: 'pt-BR' -%}
-<nav aria-label="{% if idioma == 'en' %}Main navigation{% else %}Navegação principal{% endif %}">
+<nav class="nav-principal" aria-label="{% if idioma == 'en' %}Main navigation{% else %}Navegação principal{% endif %}">
     <ul>
 {%- if idioma == 'en' %}
         <li><a href="/en/"{% if page.nav == 'inicio' %} aria-current="page"{% endif %}>HOME</a></li>

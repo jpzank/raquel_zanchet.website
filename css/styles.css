@@ -188,7 +188,7 @@ main[tabindex="-1"]:focus {
 
    A separação ao rolar era sombra e virou fio. Sombra sobre branco é o
    recurso de que um site precisa quando não confia na própria grade. */
-nav {
+.nav-principal {
     position: fixed;
     top: 0;
     width: 100%;
@@ -199,7 +199,7 @@ nav {
     transition: border-color 0.3s ease;
 }
 
-nav.nav-scrolled {
+.nav-principal.nav-scrolled {
     background: rgba(255, 255, 255, 0.95);
     border-bottom-color: var(--fio);
     backdrop-filter: blur(4px);
@@ -209,7 +209,7 @@ nav.nav-scrolled {
    passava a largura da tela, então diminuiu, e a lista pode quebrar em duas
    linhas quando não couber. Onde ela quebra, o padding-top do main aumenta
    junto, senão a navegação fixa cobre o começo do conteúdo. */
-nav ul {
+.nav-principal ul {
     display: flex;
     justify-content: center;
     flex-wrap: wrap;
@@ -222,7 +222,7 @@ nav ul {
 /* O link tinha 15px de altura de toque, abaixo dos 24px que a WCAG 2.2 pede
    no nível AA. O padding leva para cerca de 40px sem mexer no tamanho da
    letra nem na altura total da barra. */
-nav a {
+.nav-principal a {
     display: inline-block;
     position: relative;
     padding: var(--e-3) var(--e-1);
@@ -234,7 +234,7 @@ nav a {
     font-weight: var(--font-weight-regular);
 }
 
-nav a:hover {
+.nav-principal a:hover {
     color: var(--marca);
 }
 
@@ -256,7 +256,7 @@ nav a:hover {
 /* Marca visualmente a página atual, além do aria-current para leitores de
    tela. O traço é desenhado por pseudo-elemento para acompanhar o texto, e
    não a borda inferior da área de toque, que agora é bem maior. */
-nav a[aria-current="page"]::after {
+.nav-principal a[aria-current="page"]::after {
     content: "";
     position: absolute;
     left: var(--e-1);
@@ -1350,6 +1350,7 @@ main,
    recomendado pela WCAG 2.2, sem alterar o desenho. */
 .social-links a {
     display: inline-flex;
+    color: inherit;
     padding: 10px;
 }
 
@@ -1427,15 +1428,85 @@ main,
 footer {
     max-width: var(--largura-total);
     margin: var(--e-9) auto 0;
-    padding: var(--e-6) var(--e-5) var(--e-7);
+    padding: var(--e-8) var(--e-5) var(--e-7);
     border-top: 1px solid var(--fio);
-    text-align: center;
     font-size: var(--t-sm);
     color: var(--tinta-suave);
 }
 
-.footer-contact p {
-    margin: var(--e-2) 0;
+/* As duas listas têm a largura do próprio conteúdo e encostam na margem
+   direita; a marca fica com o resto. Divididas em três colunas iguais elas
+   sobrava um vão morto no meio, porque nenhuma das duas chega perto de
+   preencher um terço da página. */
+.rodape-grade {
+    display: grid;
+    grid-template-columns: 1fr auto auto;
+    gap: var(--e-7) var(--e-8);
+    align-items: start;
+}
+
+.rodape-marca img {
+    width: 220px;
+    max-width: 100%;
+    height: auto;
+    display: block;
+    margin-bottom: var(--e-4);
+}
+
+.rodape-marca p {
+    max-width: 34ch;
+    line-height: var(--line-height-relaxed);
+}
+
+.rodape-rotulo {
+    font-size: var(--t-xs);
+    letter-spacing: var(--ls-rotulo);
+    text-transform: uppercase;
+    color: var(--tinta);
+    margin-bottom: var(--e-3);
+}
+
+.rodape-nav ul {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+
+/* O recuo vertical existe para a área de toque: leva cada item a 29px, acima
+   dos 24px que a WCAG 2.2 pede no nível AA. Com o dobro disso a lista ficava
+   frouxa ao lado da coluna de contato, onde as linhas são bem mais juntas. */
+.rodape-nav a {
+    display: inline-block;
+    padding: var(--e-1) 0;
+    color: var(--tinta-suave);
+    text-decoration: none;
+    transition: color 0.3s ease;
+}
+
+.rodape-nav a:hover {
+    color: var(--marca);
+}
+
+/* O e-mail é uma palavra só de 24 caracteres e não tem onde quebrar sozinho.
+   Sem esta trava ele atravessava a borda da tela em 320, 360 e 390px. */
+.rodape-contato p {
+    margin-bottom: var(--e-1);
+    overflow-wrap: break-word;
+}
+
+.rodape-contato .social-links {
+    justify-content: flex-start;
+    margin-top: var(--e-3);
+    margin-left: -10px; /* anula o padding do primeiro ícone, que alinha o desenho com o texto acima */
+}
+
+.rodape-fim {
+    margin-top: var(--e-8);
+    padding-top: var(--e-5);
+    border-top: 1px solid var(--fio);
+    font-size: var(--t-xs);
+    letter-spacing: var(--ls-nav);
+    color: var(--tinta-suave);
 }
 
 /* --------------------------------------------------------------------------
@@ -1448,7 +1519,7 @@ footer {
         padding: 100px var(--e-4) 0;
     }
 
-    nav ul {
+    .nav-principal ul {
         gap: var(--e-2) var(--e-5);
     }
 
@@ -1554,6 +1625,35 @@ footer {
     .logo-container {
         margin-bottom: var(--e-7);
     }
+
+    /* Três colunas não cabem: a marca fica em cima, e as duas listas dividem
+       a linha de baixo, que é mais compacto do que empilhar as três. */
+    .rodape-grade {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+        gap: var(--e-6);
+    }
+
+    .rodape-marca {
+        grid-column: 1 / -1;
+    }
+
+    footer {
+        padding: var(--e-7) var(--e-4) var(--e-6);
+    }
+
+    .rodape-fim {
+        margin-top: var(--e-6);
+    }
+}
+
+/* Duas colunas de rodapé só cabem até aqui. Abaixo disso cada uma fica com
+   menos de 180px, e nem o e-mail nem a fileira de quatro ícones passam nessa
+   medida: em 320, 360 e 390px eles atravessavam a borda da tela. */
+@media (max-width: 560px) {
+    .rodape-grade {
+        grid-template-columns: minmax(0, 1fr);
+        gap: var(--e-6);
+    }
 }
 
 /* Com o botão de idioma são sete itens de navegação, e por volta dos 760px
@@ -1561,20 +1661,20 @@ footer {
    duas com o recuo de desktop, chegava a 139px de altura, e o padding-top de
    100px do main deixava a barra cobrir o conteúdo. */
 @media (max-width: 767px) {
-    nav ul {
+    .nav-principal ul {
         gap: var(--e-1) var(--e-4);
     }
 
     /* Recuo menor que no desktop porque aqui são duas linhas: com 0,8rem a
        barra fixa passava de 115px e comia um sétimo da tela. Com 0,55rem a
        área de toque fica em 33px, acima dos 24px do nível AA. */
-    nav a {
+    .nav-principal a {
         font-size: var(--t-sm);
         letter-spacing: var(--ls-nav);
         padding: var(--e-2) var(--e-1);
     }
 
-    nav a[aria-current="page"]::after {
+    .nav-principal a[aria-current="page"]::after {
         bottom: 0.4rem;
     }
 
@@ -1588,11 +1688,11 @@ footer {
    passava a cobrir o começo do conteúdo. Letra e vãos um pouco menores
    devolvem a barra para duas linhas. */
 @media (max-width: 400px) {
-    nav ul {
+    .nav-principal ul {
         gap: var(--e-1) var(--e-3);
     }
 
-    nav a {
+    .nav-principal a {
         font-size: var(--t-xs);
         letter-spacing: 0.02em;
     }
