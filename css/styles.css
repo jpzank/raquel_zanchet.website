@@ -269,10 +269,9 @@ main {
     line-height: 1.45;
 }
 
-/* O arquivo do logo tem 366px de largura. Exibi-lo a 400px o ampliava, e
-   ampliação não cria detalhe, só borra. Limitado ao tamanho nativo.
-   Em telas retina ele continua abaixo do ideal: isso só se resolve com o
-   arquivo original em vetor ou em resolução maior. */
+/* O logo agora é vetorial, então qualquer largura sai nítida, inclusive em
+   tela retina. Os 366px vêm do arquivo antigo e continuam porque é a medida
+   que o layout foi desenhado para receber, não porque haja limite técnico. */
 .hero .logo {
     width: 366px;
     max-width: 100%;
