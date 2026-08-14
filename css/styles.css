@@ -583,6 +583,66 @@ main,
 }
 
 /* --------------------------------------------------------------------------
+   Índice da página
+   --------------------------------------------------------------------------
+
+   Serviços tem 5.600px de altura e Collab tem 6.700px, e nenhuma das duas
+   tinha como pular. As âncoras de Serviços já existiam no HTML desde que a
+   página foi escrita, sem nada apontando para elas.
+
+   Não é fixo. Uma segunda barra grudada no topo brigaria com a navegação
+   principal por espaço vertical, que no celular já custa 91px. O índice
+   cumpre o papel onde ele importa, que é na chegada: a pessoa pousa, lê os
+   quatro ou cinco nomes e escolhe. */
+
+.indice {
+    margin: 0 auto var(--e-8);
+    padding: var(--e-4) 0;
+    border-top: 1px solid var(--fio);
+    border-bottom: 1px solid var(--fio);
+    max-width: var(--largura-texto);
+}
+
+.indice ul {
+    list-style: none;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: var(--e-2) var(--e-5);
+    margin: 0;
+    padding: 0;
+}
+
+.indice a {
+    display: inline-block;
+    padding: var(--e-2) 0;
+    font-size: var(--t-sm);
+    color: var(--tinta-suave);
+    text-decoration: none;
+    transition: color 0.3s ease;
+}
+
+.indice a:hover {
+    color: var(--marca);
+}
+
+/* O número vem do próprio desenho da página de serviços, onde as seções já
+   são 01 a 04. Serve também para o índice não ser confundido com a lista de
+   categorias logo acima, que é parecida de longe e diz outra coisa. */
+.indice-num {
+    color: var(--marca);
+    margin-right: var(--e-2);
+}
+
+/* Sem isto o salto deixa o título embaixo da navegação fixa, que tem 65px no
+   desktop e 91px no celular. */
+[id]:target,
+.servico[id],
+.project-card[id] {
+    scroll-margin-top: 110px;
+}
+
+/* --------------------------------------------------------------------------
    Faixas de imagem
    --------------------------------------------------------------------------
 
@@ -1870,6 +1930,14 @@ footer {
     main,
     .projects-container {
         padding-top: 116px;
+    }
+
+    /* A barra tem 91px em duas linhas aqui, então o alvo do salto precisa de
+       mais folga do que os 110px do desktop. */
+    [id]:target,
+    .servico[id],
+    .project-card[id] {
+        scroll-margin-top: 130px;
     }
 }
 
