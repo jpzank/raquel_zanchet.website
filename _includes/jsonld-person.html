@@ -1,15 +1,27 @@
+{%- assign idioma = page.lang | default: 'pt-BR' -%}
     <script type="application/ld+json">
     {
       "@context": "https://schema.org",
       "@type": "Person",
       "name": "Raquel Zanchet",
-      "url": "https://raquelzanchet.com/",
+      "url": "https://raquelzanchet.com/{% if idioma == 'en' %}en/{% endif %}",
       "image": "https://raquelzanchet.com/images/raquel-zanchet.jpg",
-      "jobTitle": "Consultora de produto hoteleiro",
+      "jobTitle": "{% if idioma == 'en' %}Hotel product consultant{% else %}Consultora de produto hoteleiro{% endif %}",
       "email": "raquel@raquelzanchet.com",
       "telephone": "+55-11-99768-2460",
-      "description": "Desenvolvimento de produto hoteleiro do conceito à operação: hospitality design, curadoria de FF&E e implantação para hotéis boutique, nature lodges e pousadas de luxo.",
+      "description": "{% if idioma == 'en' %}Hotel product development from concept to operation: hospitality design, FF&E curation and implementation for boutique hotels, nature lodges and luxury pousadas.{% else %}Desenvolvimento de produto hoteleiro do conceito à operação: hospitality design, curadoria de FF&E e implantação para hotéis boutique, nature lodges e pousadas de luxo.{% endif %}",
       "knowsAbout": [
+{%- if idioma == 'en' %}
+        "Hospitality design",
+        "Hotel interior design",
+        "FF&E curation",
+        "Hotel implementation",
+        "Hotel pre-opening",
+        "Retrofit",
+        "Boutique hotels",
+        "Nature lodges",
+        "Regenerative tourism"
+{%- else %}
         "Hospitality design",
         "Design de interiores para hotelaria",
         "Curadoria de FF&E",
@@ -19,6 +31,7 @@
         "Hotelaria boutique",
         "Nature lodges",
         "Turismo regenerativo"
+{%- endif %}
       ],
       "sameAs": [
         "https://www.instagram.com/raquelzanchet/",

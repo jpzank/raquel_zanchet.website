@@ -1,10 +1,33 @@
-<nav aria-label="Navegação principal">
+{%- comment -%}
+  Uma navegação só, com os rótulos e os endereços trocando conforme o idioma
+  da página. O último item é o botão de idioma, que leva à mesma página no
+  outro idioma, usando o alt_url declarado no front matter.
+{%- endcomment -%}
+{%- assign idioma = page.lang | default: 'pt-BR' -%}
+<nav aria-label="{% if idioma == 'en' %}Main navigation{% else %}Navegação principal{% endif %}">
     <ul>
+{%- if idioma == 'en' %}
+        <li><a href="/en/"{% if page.nav == 'inicio' %} aria-current="page"{% endif %}>HOME</a></li>
+        <li><a href="/en/services/"{% if page.nav == 'servicos' %} aria-current="page"{% endif %}>SERVICES</a></li>
+        <li><a href="/en/projects/"{% if page.nav == 'projetos' %} aria-current="page"{% endif %}>PROJECTS</a></li>
+        <li><a href="/en/collab/"{% if page.nav == 'collab' %} aria-current="page"{% endif %}>COLLAB</a></li>
+        <li><a href="/en/about/"{% if page.nav == 'sobre' %} aria-current="page"{% endif %}>ABOUT</a></li>
+        <li><a href="/en/contact/"{% if page.nav == 'contato' %} aria-current="page"{% endif %}>CONTACT</a></li>
+{%- else %}
         <li><a href="/"{% if page.nav == 'inicio' %} aria-current="page"{% endif %}>INÍCIO</a></li>
         <li><a href="/pages/servicos/"{% if page.nav == 'servicos' %} aria-current="page"{% endif %}>SERVIÇOS</a></li>
         <li><a href="/pages/projetos/"{% if page.nav == 'projetos' %} aria-current="page"{% endif %}>PROJETOS</a></li>
         <li><a href="/pages/collab/"{% if page.nav == 'collab' %} aria-current="page"{% endif %}>COLLAB</a></li>
         <li><a href="/pages/sobre/"{% if page.nav == 'sobre' %} aria-current="page"{% endif %}>SOBRE</a></li>
         <li><a href="/pages/contato/"{% if page.nav == 'contato' %} aria-current="page"{% endif %}>CONTATO</a></li>
+{%- endif %}
+{%- if page.alt_url %}
+        <li class="nav-idioma">
+            <a href="{{ page.alt_url }}" class="troca-idioma"
+               hreflang="{% if idioma == 'en' %}pt-BR{% else %}en{% endif %}"
+               lang="{% if idioma == 'en' %}pt-BR{% else %}en{% endif %}"
+               aria-label="{% if idioma == 'en' %}Ver em português{% else %}View this page in English{% endif %}">{% if idioma == 'en' %}PT{% else %}EN{% endif %}</a>
+        </li>
+{%- endif %}
     </ul>
 </nav>

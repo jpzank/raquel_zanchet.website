@@ -18,4 +18,15 @@ description: "A página que você procura não existe. Volte ao início ou conhe
         <a href="/pages/projetos/" class="project-button">Ver projetos</a>
         <a href="/pages/contato/" class="project-button">Falar comigo</a>
     </div>
+
+    {%- comment -%}
+      O GitHub Pages serve um 404 só para o site inteiro, inclusive para
+      endereços em /en/. Por isso esta página é bilíngue.
+    {%- endcomment -%}
+    <p class="nf-en" lang="en">This page does not exist or has moved.</p>
+    <div class="not-found-links" lang="en">
+        <a href="/en/" class="project-button">Go to home</a>
+        <a href="/en/projects/" class="project-button">View projects</a>
+        <a href="/en/contact/" class="project-button">Get in touch</a>
+    </div>
 </section>

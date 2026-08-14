@@ -1,5 +1,13 @@
 <!DOCTYPE html>
-<html lang="pt-BR">
+{%- comment -%}
+  O site tem duas versões, português em / e inglês em /en/. Cada página
+  declara lang e alt_url no seu front matter: lang define o idioma do
+  documento, alt_url aponta para a mesma página no outro idioma, e é dele
+  que saem as marcações hreflang que dizem ao Google que as duas são a
+  mesma coisa em idiomas diferentes.
+{%- endcomment -%}
+{%- assign idioma = page.lang | default: 'pt-BR' -%}
+<html lang="{{ idioma }}">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -9,6 +17,11 @@
     <meta name="robots" content="noindex">
 {%- else %}
     <link rel="canonical" href="{{ page.url | absolute_url }}">
+{%- if page.alt_url %}
+    <link rel="alternate" hreflang="{{ idioma }}" href="{{ page.url | absolute_url }}">
+    <link rel="alternate" hreflang="{% if idioma == 'en' %}pt-BR{% else %}en{% endif %}" href="{{ page.alt_url | absolute_url }}">
+    <link rel="alternate" hreflang="x-default" href="{% if idioma == 'en' %}{{ page.alt_url | absolute_url }}{% else %}{{ page.url | absolute_url }}{% endif %}">
+{%- endif %}
 {%- endif %}
 {%- if page.preload_image %}
     <link rel="preload" as="image" href="{{ page.preload_image }}" type="{{ page.preload_image_type | default: 'image/webp' }}" fetchpriority="high">
@@ -16,7 +29,10 @@
 {% unless page.noindex %}
     <meta property="og:type" content="website">
     <meta property="og:site_name" content="Raquel Zanchet">
-    <meta property="og:locale" content="pt_BR">
+    <meta property="og:locale" content="{% if idioma == 'en' %}en_US{% else %}pt_BR{% endif %}">
+{%- if page.alt_url %}
+    <meta property="og:locale:alternate" content="{% if idioma == 'en' %}pt_BR{% else %}en_US{% endif %}">
+{%- endif %}
     <meta property="og:url" content="{{ page.url | absolute_url }}">
     <meta property="og:title" content="{{ page.title }}">
     <meta property="og:description" content="{{ page.og_description | default: page.description }}">
@@ -47,7 +63,7 @@
 {%- endif %}
 </head>
 <body>
-    <a class="skip-link" href="#conteudo">Pular para o conteúdo</a>
+    <a class="skip-link" href="#conteudo">{% if idioma == 'en' %}Skip to content{% else %}Pular para o conteúdo{% endif %}</a>
 
     {% include nav.html %}
 

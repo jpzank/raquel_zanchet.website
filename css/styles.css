@@ -168,6 +168,23 @@ nav a:hover {
     opacity: 0.7;
 }
 
+/* O último item da barra troca o idioma da página. Vem em moldura para não
+   ser lido como mais uma seção do site. */
+.nav-idioma a {
+    padding: 0.5rem 0.6rem;
+    border: 1px solid #d9cfcf;
+    border-radius: 3px;
+    font-size: 0.8rem;
+    letter-spacing: 1.2px;
+    color: var(--marca);
+}
+
+.nav-idioma a:hover {
+    opacity: 1;
+    background: var(--marca-suave);
+    border-color: var(--marca);
+}
+
 /* Marca visualmente a página atual, além do aria-current para leitores de
    tela. O traço é desenhado por pseudo-elemento para acompanhar o texto, e
    não a borda inferior da área de toque, que agora é bem maior. */
@@ -1498,6 +1515,15 @@ main {
     color: var(--text-color);
 }
 
+/* A metade em inglês vem depois de um traço, para ficar claro que é a mesma
+   mensagem no outro idioma e não uma segunda mensagem. */
+.not-found .nf-en {
+    margin-top: 3.5rem;
+    padding-top: 2.5rem;
+    border-top: 1px solid #eee;
+    font-size: 1rem;
+}
+
 .not-found p {
     font-size: 1.1rem;
     line-height: var(--line-height-relaxed);
@@ -1742,7 +1768,11 @@ footer {
 /* Abaixo de 560px os seis itens de navegação não cabem em uma linha. Eles
    quebram em duas, e o main ganha altura de recuo equivalente para que a
    navegação fixa não cubra o começo do conteúdo. */
-@media (max-width: 560px) {
+/* O limite é 767px e não 560px porque é por volta dos 760px que os sete
+   itens deixam de caber em uma linha. Entre 561 e 767 a barra já quebrava em
+   duas linhas com o recuo de desktop, chegava a 139px de altura, e o
+   padding-top de 100px do main deixava a barra cobrir o conteúdo. */
+@media (max-width: 767px) {
     nav ul {
         gap: 0.35rem 1.15rem;
     }
@@ -1766,6 +1796,25 @@ footer {
 
     .projects-container {
         padding-top: 116px;
+    }
+}
+
+/* Com o botão de idioma são sete itens. Abaixo de 400px eles quebravam em
+   três linhas, e a barra fixa passava a cobrir o começo do conteúdo. Letra e
+   vãos um pouco menores devolvem a barra para duas linhas. */
+@media (max-width: 400px) {
+    nav ul {
+        gap: 0.3rem 0.85rem;
+    }
+
+    nav a {
+        font-size: 0.78rem;
+        letter-spacing: 0.3px;
+    }
+
+    .nav-idioma a {
+        font-size: 0.7rem;
+        padding: 0.5rem 0.4rem;
     }
 }
 
