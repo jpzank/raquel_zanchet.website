@@ -544,6 +544,33 @@ main {
     margin-bottom: 1.2rem;
 }
 
+/* Subgrupos dentro de cada serviço, com os mesmos nomes do documento da
+   Raquel: posicionamento e produto, design de interiores, guest experience,
+   e assim por diante. */
+.servico h4 {
+    font-size: var(--font-size-sm);
+    font-weight: var(--font-weight-medium);
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--marca);
+    margin: 2rem 0 0.6rem;
+}
+
+/* Delimitações de escopo. Ficam em cinza e em corpo menor porque são
+   ressalvas, não promessas, mas continuam legíveis. */
+.servico-nota {
+    font-size: 0.93rem;
+    line-height: var(--line-height-relaxed);
+    color: #666;
+    margin: 0.9rem 0 0;
+    padding-left: 0.9rem;
+    border-left: 2px solid #e6dede;
+}
+
+.servico h4 + .servico-nota {
+    margin-top: 0.2rem;
+}
+
 .entregas {
     list-style: none;
     padding: 0;
