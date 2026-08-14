@@ -636,6 +636,40 @@ main {
 }
 
 /* --------------------------------------------------------------------------
+   Medida de leitura
+   --------------------------------------------------------------------------
+
+   O texto corrido chegava a 139 caracteres por linha nos cartões de projeto e
+   a 99 nas páginas de serviços e sobre. O confortável fica entre 45 e 75, com
+   80 de teto: acima disso o olho perde a linha ao voltar para a esquerda.
+
+   A medida vai em ch, não em pixel, porque ch acompanha o tamanho da fonte.
+   Um limite de 780px vira 99 caracteres num corpo e 80 em outro; 68ch é 68
+   caracteres em qualquer um deles.
+
+   O limite vale só para os parágrafos e listas. Imagens, grades de detalhes e
+   galerias continuam ocupando a largura inteira do cartão, que é o contraste
+   que faz o texto medido parecer intencional. */
+
+.project-content > p,
+.caso p,
+.project-development p,
+.clipping-intro p,
+.clipping-intro blockquote,
+.mention-item p,
+.servico-resumo,
+.servico-nota,
+.entregas li,
+.lt-corpo p,
+.bloco-texto p {
+    max-width: 68ch;
+}
+
+.quotes p {
+    max-width: 60ch;
+}
+
+/* --------------------------------------------------------------------------
    Formato de caso, na página de projetos
    -------------------------------------------------------------------------- */
 
@@ -906,8 +940,11 @@ main {
     letter-spacing: 1px;
 }
 
+/* Texto centralizado pede medida mais curta que texto alinhado à esquerda:
+   sem a âncora da margem esquerda, a linha longa é mais difícil de retomar.
+   Os 800px davam 94 caracteres por linha. */
 .page-header .intro-text {
-    max-width: 800px;
+    max-width: 62ch;
     margin: 2rem auto;
     font-size: 1.1rem;
     line-height: 1.8;
