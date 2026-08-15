@@ -107,16 +107,21 @@ og_image_alt: "Natural pool ringed by rainforest, under the Raquel Zanchet Hospi
     </section>
 
     <div class="trio-fotos">
+        {%- comment -%}
+          Mesma conta da versão em português: a coluna real é
+          (100vw - 48px) / 2 abaixo de 700px, e a foto que ocupa a linha
+          inteira mede 100vw menos os 32px de recuo do container.
+        {%- endcomment -%}
         <picture>
-            <source type="image/webp" sizes="(max-width: 700px) 50vw, 229px" srcset="/images/bem-estar-mata-240.webp 240w, /images/bem-estar-mata-480.webp 480w, /images/bem-estar-mata-700.webp 700w">
+            <source type="image/webp" sizes="(max-width: 700px) calc(50vw - 24px), 229px" srcset="/images/bem-estar-mata-240.webp 240w, /images/bem-estar-mata-480.webp 480w, /images/bem-estar-mata-700.webp 700w">
             <img src="/images/bem-estar-mata.jpg" alt="Dense rainforest with a shallow watercourse lit by sun coming through the canopy" width="480" height="721" loading="lazy" decoding="async">
         </picture>
         <picture>
-            <source type="image/webp" sizes="(max-width: 700px) 50vw, 229px" srcset="/images/bem-estar-rede-240.webp 240w, /images/bem-estar-rede-480.webp 480w, /images/bem-estar-rede-700.webp 700w">
+            <source type="image/webp" sizes="(max-width: 700px) calc(50vw - 24px), 229px" srcset="/images/bem-estar-rede-240.webp 240w, /images/bem-estar-rede-480.webp 480w, /images/bem-estar-rede-700.webp 700w">
             <img src="/images/bem-estar-rede.jpg" alt="White fringed hammock slung between two posts at the edge of the forest" width="480" height="721" loading="lazy" decoding="async">
         </picture>
         <picture>
-            <source type="image/webp" sizes="(max-width: 700px) 100vw, 229px" srcset="/images/bem-estar-deck-240.webp 240w, /images/bem-estar-deck-480.webp 480w, /images/bem-estar-deck-700.webp 700w">
+            <source type="image/webp" sizes="(max-width: 700px) calc(100vw - 32px), 229px" srcset="/images/bem-estar-deck-240.webp 240w, /images/bem-estar-deck-480.webp 480w, /images/bem-estar-deck-700.webp 700w">
             <img src="/images/bem-estar-deck.jpg" alt="Person sitting in meditation on a wooden deck raised above the tree canopy" width="480" height="721" loading="lazy" decoding="async">
         </picture>
     </div>

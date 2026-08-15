@@ -105,17 +105,28 @@ og_image_alt: "Lâmina d'água natural cercada de mata, sob o logo Raquel Zanche
         <p class="servico-nota">Não estão incluídos neste escopo: compras, negociação comercial, contratação de fornecedores, emissão de pedidos, acompanhamento financeiro, logística, transporte, armazenamento, recebimento ou controle de entregas.</p>
     </section>
 
+    {%- comment -%}
+      Os sizes descrevem a coluna real, não a fração de tela. Abaixo de 700px
+      a grade tem duas colunas dentro de um container com 16px de recuo de
+      cada lado e 16px de gap, então cada coluna mede (100vw - 48px) / 2, ou
+      seja calc(50vw - 24px); a terceira foto ocupa a linha inteira, que é
+      calc(100vw - 32px). Declarar 50vw e 100vw secos superestimava a coluna
+      em 9 a 15%, e o suficiente para o navegador subir um degrau do srcset:
+      num telefone de 360px com DPR 3 ele pedia o arquivo de 700w onde o de
+      480w já cobria. Acima de 700px são três colunas nos 720px do container,
+      e aí 229px é medida fixa.
+    {%- endcomment -%}
     <div class="trio-fotos">
         <picture>
-            <source type="image/webp" sizes="(max-width: 700px) 50vw, 229px" srcset="/images/bem-estar-mata-240.webp 240w, /images/bem-estar-mata-480.webp 480w, /images/bem-estar-mata-700.webp 700w">
+            <source type="image/webp" sizes="(max-width: 700px) calc(50vw - 24px), 229px" srcset="/images/bem-estar-mata-240.webp 240w, /images/bem-estar-mata-480.webp 480w, /images/bem-estar-mata-700.webp 700w">
             <img src="/images/bem-estar-mata.jpg" alt="Mata fechada com um curso de água raso, iluminado pelo sol que atravessa as copas" width="480" height="721" loading="lazy" decoding="async">
         </picture>
         <picture>
-            <source type="image/webp" sizes="(max-width: 700px) 50vw, 229px" srcset="/images/bem-estar-rede-240.webp 240w, /images/bem-estar-rede-480.webp 480w, /images/bem-estar-rede-700.webp 700w">
+            <source type="image/webp" sizes="(max-width: 700px) calc(50vw - 24px), 229px" srcset="/images/bem-estar-rede-240.webp 240w, /images/bem-estar-rede-480.webp 480w, /images/bem-estar-rede-700.webp 700w">
             <img src="/images/bem-estar-rede.jpg" alt="Rede de tecido branco com franjas, armada entre dois troncos na borda da mata" width="480" height="721" loading="lazy" decoding="async">
         </picture>
         <picture>
-            <source type="image/webp" sizes="(max-width: 700px) 100vw, 229px" srcset="/images/bem-estar-deck-240.webp 240w, /images/bem-estar-deck-480.webp 480w, /images/bem-estar-deck-700.webp 700w">
+            <source type="image/webp" sizes="(max-width: 700px) calc(100vw - 32px), 229px" srcset="/images/bem-estar-deck-240.webp 240w, /images/bem-estar-deck-480.webp 480w, /images/bem-estar-deck-700.webp 700w">
             <img src="/images/bem-estar-deck.jpg" alt="Pessoa sentada em meditação num deck de madeira suspenso sobre as copas das árvores" width="480" height="721" loading="lazy" decoding="async">
         </picture>
     </div>
