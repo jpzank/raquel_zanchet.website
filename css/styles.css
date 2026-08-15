@@ -160,9 +160,15 @@ main a:not([class]):hover {
     transform: translateY(0);
 }
 
-/* O <main> recebe tabindex="-1" para ser alvo do atalho acima. O foco vai
-   para ele de propósito, mas contornar a página inteira não ajuda ninguém. */
-main[tabindex="-1"]:focus {
+/* O <main> recebe tabindex="-1" para ser alvo do atalho acima, e as seções
+   apontadas pelo índice de página recebem o mesmo do script, para que o Tab
+   siga dali. O foco vai para esses blocos de propósito, mas contornar uma
+   página ou uma seção inteira não orienta ninguém.
+
+   tabindex="-1" nunca entra na ordem do Tab, então quem casa com este seletor
+   só chega ao foco por código: não há como suprimir aqui um anel de foco que
+   alguém fosse alcançar pelo teclado. */
+[tabindex="-1"]:focus {
     outline: none;
 }
 

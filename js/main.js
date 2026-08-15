@@ -9,6 +9,18 @@ document.querySelectorAll('a[href^="#"]').forEach(anchor => {
         // acima cancela o reposicionamento de foco que o navegador faria, e o
         // link "pular para o conteúdo" deixa de pular: o Tab seguinte volta
         // para o primeiro item da navegação.
+        //
+        // focus() só funciona em elemento focável, e <section> não é. O <main>
+        // do skip-link já traz tabindex="-1" na marcação, mas as seções do
+        // índice de página não, então ali o focus() falhava calado: a página
+        // rolava e o Tab seguinte continuava no item seguinte do índice, a
+        // meia página de distância do que se estava lendo. O atributo entra
+        // aqui, para valer para qualquer âncora que venha depois, e sai no
+        // blur para não deixar rastro no DOM.
+        if (!target.hasAttribute('tabindex')) {
+            target.setAttribute('tabindex', '-1');
+            target.addEventListener('blur', () => target.removeAttribute('tabindex'), { once: true });
+        }
         target.focus({ preventScroll: true });
     });
 });
