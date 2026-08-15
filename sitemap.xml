@@ -1,66 +1,45 @@
+---
+layout: null
+permalink: /sitemap.xml
+---
+{%- comment -%}
+  O sitemap sai das próprias páginas, e não de uma lista escrita à mão: cada
+  página nova aparece aqui sozinha, e nenhuma some por esquecimento.
+
+  Entram as páginas com layout default que não são noindex, o que deixa a 404
+  de fora. Os redirecionamentos antigos em /pages/*.html não têm front matter,
+  então o Jekyll os trata como arquivo estático e eles nem chegam a site.pages.
+
+  O hreflang vem do alt_url que cada página já declara para o <head>, então as
+  duas marcações não têm como divergir. x-default aponta para o português, que
+  é a versão principal do site.
+
+  Sem <lastmod>: o GitHub Pages não expõe a data real de modificação de cada
+  página, e site.time seria a hora do build, ou seja, a data mudaria em toda
+  publicação mesmo para páginas intocadas. O Google desconsidera lastmod que
+  não confere, então é melhor não declarar. Sem <priority> também: o Google
+  anunciou que ignora o campo.
+{%- endcomment -%}
 <?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"
         xmlns:xhtml="http://www.w3.org/1999/xhtml">
+{%- assign publicas = site.pages | where: 'layout', 'default' | sort: 'url' -%}
+{%- for pagina in publicas -%}
+{%- unless pagina.noindex %}
   <url>
-    <loc>https://raquelzanchet.com/</loc>
-    <xhtml:link rel="alternate" hreflang="pt-BR" href="https://raquelzanchet.com/"/>
-    <xhtml:link rel="alternate" hreflang="en" href="https://raquelzanchet.com/en/"/>
-    <priority>1.0</priority>
+    <loc>{{ pagina.url | absolute_url }}</loc>
+{%- if pagina.alt_url %}
+{%- if pagina.lang == 'en' %}
+    <xhtml:link rel="alternate" hreflang="pt-BR" href="{{ pagina.alt_url | absolute_url }}"/>
+    <xhtml:link rel="alternate" hreflang="en" href="{{ pagina.url | absolute_url }}"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="{{ pagina.alt_url | absolute_url }}"/>
+{%- else %}
+    <xhtml:link rel="alternate" hreflang="pt-BR" href="{{ pagina.url | absolute_url }}"/>
+    <xhtml:link rel="alternate" hreflang="en" href="{{ pagina.alt_url | absolute_url }}"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="{{ pagina.url | absolute_url }}"/>
+{%- endif %}
+{%- endif %}
   </url>
-  <url>
-    <loc>https://raquelzanchet.com/pages/servicos/</loc>
-    <xhtml:link rel="alternate" hreflang="pt-BR" href="https://raquelzanchet.com/pages/servicos/"/>
-    <xhtml:link rel="alternate" hreflang="en" href="https://raquelzanchet.com/en/services/"/>
-    <priority>0.9</priority>
-  </url>
-  <url>
-    <loc>https://raquelzanchet.com/pages/projetos/</loc>
-    <xhtml:link rel="alternate" hreflang="pt-BR" href="https://raquelzanchet.com/pages/projetos/"/>
-    <xhtml:link rel="alternate" hreflang="en" href="https://raquelzanchet.com/en/projects/"/>
-    <priority>0.8</priority>
-  </url>
-  <url>
-    <loc>https://raquelzanchet.com/pages/collab/</loc>
-    <xhtml:link rel="alternate" hreflang="pt-BR" href="https://raquelzanchet.com/pages/collab/"/>
-    <xhtml:link rel="alternate" hreflang="en" href="https://raquelzanchet.com/en/collab/"/>
-    <priority>0.8</priority>
-  </url>
-  <url>
-    <loc>https://raquelzanchet.com/pages/sobre/</loc>
-    <xhtml:link rel="alternate" hreflang="pt-BR" href="https://raquelzanchet.com/pages/sobre/"/>
-    <xhtml:link rel="alternate" hreflang="en" href="https://raquelzanchet.com/en/about/"/>
-    <priority>0.7</priority>
-  </url>
-  <url>
-    <loc>https://raquelzanchet.com/pages/contato/</loc>
-    <xhtml:link rel="alternate" hreflang="pt-BR" href="https://raquelzanchet.com/pages/contato/"/>
-    <xhtml:link rel="alternate" hreflang="en" href="https://raquelzanchet.com/en/contact/"/>
-    <priority>0.5</priority>
-  </url>
-  <url>
-    <loc>https://raquelzanchet.com/en/</loc>
-    <xhtml:link rel="alternate" hreflang="pt-BR" href="https://raquelzanchet.com/"/>
-    <xhtml:link rel="alternate" hreflang="en" href="https://raquelzanchet.com/en/"/>
-    <priority>1.0</priority>
-  </url>
-  <url>
-    <loc>https://raquelzanchet.com/en/services/</loc>
-    <priority>0.9</priority>
-  </url>
-  <url>
-    <loc>https://raquelzanchet.com/en/projects/</loc>
-    <priority>0.8</priority>
-  </url>
-  <url>
-    <loc>https://raquelzanchet.com/en/collab/</loc>
-    <priority>0.8</priority>
-  </url>
-  <url>
-    <loc>https://raquelzanchet.com/en/about/</loc>
-    <priority>0.7</priority>
-  </url>
-  <url>
-    <loc>https://raquelzanchet.com/en/contact/</loc>
-    <priority>0.5</priority>
-  </url>
+{%- endunless -%}
+{%- endfor %}
 </urlset>
