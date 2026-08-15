@@ -1,27 +1,37 @@
+{%- comment -%}
+  Os dados estruturados da página de projetos. Existiam só em português, o que
+  deixava /en/projects/ sem nada: o mesmo conteúdo, invisível para o Google
+  como coleção de obras.
+
+  name, description e url mudam com o idioma. url em especial precisa apontar
+  para a página que está sendo renderizada, e não para a portuguesa fixa, senão
+  a versão inglesa declararia ser outra página.
+{%- endcomment -%}
+{%- assign idioma = page.lang | default: 'pt-BR' -%}
     <script type="application/ld+json">
     {
       "@context": "https://schema.org",
       "@type": "CollectionPage",
-      "name": "Projetos - Raquel Zanchet",
-      "url": "https://raquelzanchet.com/pages/projetos/",
+      "name": "{% if idioma == 'en' %}Projects - Raquel Zanchet{% else %}Projetos - Raquel Zanchet{% endif %}",
+      "url": "{{ page.url | absolute_url }}",
       "about": [
         {
           "@type": "CreativeWork",
           "name": "Jardim da Amazônia Lodge",
-          "description": "Lodge de turismo sustentável ao sul da Amazônia, em São José do Rio Claro, Mato Grosso, em área de transição entre o Cerrado e a Amazônia, com mais de 530 espécies de aves registradas.",
+          "description": "{% if idioma == 'en' %}Sustainable tourism lodge south of the Amazon, in São José do Rio Claro, Mato Grosso, in the transition zone between the Cerrado and the Amazon, with more than 530 bird species recorded.{% else %}Lodge de turismo sustentável ao sul da Amazônia, em São José do Rio Claro, Mato Grosso, em área de transição entre o Cerrado e a Amazônia, com mais de 530 espécies de aves registradas.{% endif %}",
           "url": "https://jardimdaamazonia.com",
           "dateCreated": "1997",
-          "locationCreated": { "@type": "Place", "name": "Mato Grosso, Brasil" },
+          "locationCreated": { "@type": "Place", "name": "{% if idioma == 'en' %}Mato Grosso, Brazil{% else %}Mato Grosso, Brasil{% endif %}" },
           "contributor": { "@type": "Person", "name": "Raquel Zanchet" }
         },
         {
           "@type": "CreativeWork",
           "name": "Zank Hotel Boutique",
-          "description": "Retrofit de um casarão do início do século XX no bairro Rio Vermelho, em Salvador, transformado em hotel boutique de 20 unidades habitacionais.",
+          "description": "{% if idioma == 'en' %}Retrofit of an early twentieth-century mansion in the Rio Vermelho district of Salvador, turned into a 20-key boutique hotel.{% else %}Retrofit de um casarão do início do século XX no bairro Rio Vermelho, em Salvador, transformado em hotel boutique de 20 unidades habitacionais.{% endif %}",
           "dateCreated": "2007",
-          "locationCreated": { "@type": "Place", "name": "Salvador, Bahia, Brasil" },
+          "locationCreated": { "@type": "Place", "name": "{% if idioma == 'en' %}Salvador, Bahia, Brazil{% else %}Salvador, Bahia, Brasil{% endif %}" },
           "contributor": { "@type": "Person", "name": "Raquel Zanchet" },
-          "award": "Prêmio Casa Claudia Design de Interiores 2011 - categoria Hotéis"
+          "award": "{% if idioma == 'en' %}Casa Claudia Interior Design Award 2011 - Hotels category{% else %}Prêmio Casa Claudia Design de Interiores 2011 - categoria Hotéis{% endif %}"
         }
       ]
     }
