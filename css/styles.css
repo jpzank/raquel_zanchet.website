@@ -1960,17 +1960,17 @@ footer {
 }
 
 /* Com o botão de idioma são sete itens de navegação, e por volta dos 760px
-   eles deixam de caber em uma linha. Entre 561 e 767 a barra já quebrava em
-   duas com o recuo de desktop, chegava a 139px de altura, e o padding-top de
-   100px do main deixava a barra cobrir o conteúdo. */
+   eles deixam de caber em uma linha com a letra e os vãos de desktop. Este
+   bloco diminui os dois, e só isso já mantém a barra numa linha até perto
+   dos 600px: medido, ela pede 602px em português e 595px em inglês. */
 @media (max-width: 767px) {
     .nav-principal ul {
         gap: var(--e-1) var(--e-4);
     }
 
-    /* Recuo menor que no desktop porque aqui são duas linhas: com 0,8rem a
-       barra fixa passava de 115px e comia um sétimo da tela. Com 0,55rem a
-       área de toque fica em 33px, acima dos 24px do nível AA. */
+    /* Recuo menor que no desktop porque abaixo dos 600px são duas linhas:
+       com 0,8rem a barra fixa passava de 115px e comia um sétimo da tela.
+       Com 0,55rem a área de toque fica em 33px, acima dos 24px do nível AA. */
     .nav-principal a {
         font-size: var(--t-sm);
         letter-spacing: var(--ls-nav);
@@ -1980,14 +1980,26 @@ footer {
     .nav-principal a[aria-current="page"]::after {
         bottom: 0.4rem;
     }
+}
 
+/* O recuo de duas linhas morava no bloco de 767px, e entre 602 e 767 a
+   barra tinha 56px de altura em uma linha só com 116px reservados para ela:
+   60px de branco no topo de toda página, na faixa de tablet em pé e celular
+   deitado.
+
+   O corte em 639 e não em 601 é folga. O ponto exato de quebra depende da
+   fonte que o sistema entrega, e uma Helvetica Neue um pouco mais larga
+   quebra antes da Arial em que foi medido. Errar para cima devolve o vão
+   numa faixa de só 38px; errar para baixo deixaria a barra de duas linhas
+   encostada no texto. */
+@media (max-width: 639px) {
     main,
     .projects-container {
         padding-top: 116px;
     }
 
-    /* A barra tem 91px em duas linhas aqui, então o alvo do salto precisa de
-       mais folga do que os 110px do desktop. */
+    /* A barra tem de 91 a 97px em duas linhas aqui, então o alvo do salto
+       precisa de mais folga do que os 110px do desktop. */
     [id]:target,
     .servico[id],
     .project-card[id] {
