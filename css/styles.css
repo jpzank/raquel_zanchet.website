@@ -224,6 +224,7 @@ main a:not([class]):hover {
     color: var(--tinta);
     font-size: var(--t-md);
     letter-spacing: var(--ls-nav);
+    text-transform: uppercase; /* no HTML fica caixa normal: leitor de tela lê a palavra, e quem copia leva "Serviços" */
     transition: color 0.3s;
     font-weight: var(--font-weight-regular);
 }
@@ -1135,6 +1136,7 @@ main,
     margin-bottom: var(--e-4);
     color: var(--tinta);
     letter-spacing: var(--ls-rotulo);
+    text-transform: uppercase;
 }
 
 .page-header h2 {

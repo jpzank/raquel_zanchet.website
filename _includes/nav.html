@@ -7,19 +7,19 @@
 <nav class="nav-principal" aria-label="{% if idioma == 'en' %}Main navigation{% else %}Navegação principal{% endif %}">
     <ul>
 {%- if idioma == 'en' %}
-        <li><a href="/en/"{% if page.nav == 'inicio' %} aria-current="page"{% endif %}>HOME</a></li>
-        <li><a href="/en/services/"{% if page.nav == 'servicos' %} aria-current="page"{% endif %}>SERVICES</a></li>
-        <li><a href="/en/projects/"{% if page.nav == 'projetos' %} aria-current="page"{% endif %}>PROJECTS</a></li>
-        <li><a href="/en/collab/"{% if page.nav == 'collab' %} aria-current="page"{% endif %}>COLLAB</a></li>
-        <li><a href="/en/about/"{% if page.nav == 'sobre' %} aria-current="page"{% endif %}>ABOUT</a></li>
-        <li><a href="/en/contact/"{% if page.nav == 'contato' %} aria-current="page"{% endif %}>CONTACT</a></li>
+        <li><a href="/en/"{% if page.nav == 'inicio' %} aria-current="page"{% endif %}>Home</a></li>
+        <li><a href="/en/services/"{% if page.nav == 'servicos' %} aria-current="page"{% endif %}>Services</a></li>
+        <li><a href="/en/projects/"{% if page.nav == 'projetos' %} aria-current="page"{% endif %}>Projects</a></li>
+        <li><a href="/en/collab/"{% if page.nav == 'collab' %} aria-current="page"{% endif %}>Collab</a></li>
+        <li><a href="/en/about/"{% if page.nav == 'sobre' %} aria-current="page"{% endif %}>About</a></li>
+        <li><a href="/en/contact/"{% if page.nav == 'contato' %} aria-current="page"{% endif %}>Contact</a></li>
 {%- else %}
-        <li><a href="/"{% if page.nav == 'inicio' %} aria-current="page"{% endif %}>INÍCIO</a></li>
-        <li><a href="/pages/servicos/"{% if page.nav == 'servicos' %} aria-current="page"{% endif %}>SERVIÇOS</a></li>
-        <li><a href="/pages/projetos/"{% if page.nav == 'projetos' %} aria-current="page"{% endif %}>PROJETOS</a></li>
-        <li><a href="/pages/collab/"{% if page.nav == 'collab' %} aria-current="page"{% endif %}>COLLAB</a></li>
-        <li><a href="/pages/sobre/"{% if page.nav == 'sobre' %} aria-current="page"{% endif %}>SOBRE</a></li>
-        <li><a href="/pages/contato/"{% if page.nav == 'contato' %} aria-current="page"{% endif %}>CONTATO</a></li>
+        <li><a href="/"{% if page.nav == 'inicio' %} aria-current="page"{% endif %}>Início</a></li>
+        <li><a href="/pages/servicos/"{% if page.nav == 'servicos' %} aria-current="page"{% endif %}>Serviços</a></li>
+        <li><a href="/pages/projetos/"{% if page.nav == 'projetos' %} aria-current="page"{% endif %}>Projetos</a></li>
+        <li><a href="/pages/collab/"{% if page.nav == 'collab' %} aria-current="page"{% endif %}>Collab</a></li>
+        <li><a href="/pages/sobre/"{% if page.nav == 'sobre' %} aria-current="page"{% endif %}>Sobre</a></li>
+        <li><a href="/pages/contato/"{% if page.nav == 'contato' %} aria-current="page"{% endif %}>Contato</a></li>
 {%- endif %}
 {%- if page.alt_url %}
         <li class="nav-idioma">
