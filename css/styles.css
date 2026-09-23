@@ -1553,13 +1553,15 @@ main,
     margin: 0 auto;
 }
 
+/* Sem o espacejamento de .page-header h1, de propósito. Lá o título é
+   versal, e 0.12em é o respiro que caixa alta pede; aqui é caixa baixa, e o
+   mesmo valor entre minúsculas desmonta a palavra em letras soltas. */
 .contact-page h1 {
     text-align: center;
     font-size: var(--t-3xl);
     font-weight: var(--font-weight-light);
     margin-bottom: var(--e-5);
     color: var(--tinta);
-    letter-spacing: var(--ls-rotulo);
 }
 
 .contact-page p {
@@ -1678,10 +1680,11 @@ main,
     text-align: center;
 }
 
+/* Caixa baixa, então sem espacejamento de versal, pelo mesmo motivo do
+   título de contato. */
 .not-found h1 {
     font-size: var(--t-3xl);
     font-weight: var(--font-weight-light);
-    letter-spacing: var(--ls-rotulo);
     margin-bottom: var(--e-5);
     color: var(--tinta);
 }
