@@ -308,13 +308,8 @@ main,
 }
 
 .hero h1 {
-    font-family: var(--font-display);
     font-size: var(--t-hero);
-    font-weight: var(--font-weight-regular);
     line-height: 1.18;
-    letter-spacing: var(--ls-hero);
-    color: var(--tinta);
-    text-wrap: balance;
     margin-bottom: var(--e-4);
 }
 
@@ -405,6 +400,36 @@ main,
 
 .botao-vazio:hover {
     background-color: var(--marca-suave);
+}
+
+/* --------------------------------------------------------------------------
+   Título de página
+   --------------------------------------------------------------------------
+
+   Um desenho só para todo h1 do site: a serifa do logo, peso regular, caixa
+   normal. Eram três. A home em serifa; Serviços, Projetos, Collab e Sobre
+   em sans leve e versal espaçada; Contato e a 404 em sans leve e caixa
+   baixa. A serifa, que é a voz da marca, só chegava às páginas internas no
+   olho de página, logo abaixo de um título desenhado em outra família.
+
+   Caixa normal, e não versal, porque versal serifada e espaçada é
+   exatamente o desenho de RAQUEL ZANCHET no logo. Em Contato e na 404 o
+   título fica logo abaixo dele, e em versal passaria por parte da
+   assinatura. A versal espaçada segue como desenho de rótulo, em sans:
+   navegação, abertura de seção, categorias.
+
+   Só o tamanho muda com o papel. A home abre com uma frase, as outras
+   páginas com um nome. */
+
+.hero h1,
+.page-header h1,
+.contact-page h1,
+.not-found h1 {
+    font-family: var(--font-display);
+    font-weight: var(--font-weight-regular);
+    letter-spacing: var(--ls-hero);
+    color: var(--tinta);
+    text-wrap: balance;
 }
 
 /* --------------------------------------------------------------------------
@@ -1132,11 +1157,7 @@ main,
 
 .page-header h1 {
     font-size: var(--t-3xl);
-    font-weight: var(--font-weight-light);
     margin-bottom: var(--e-4);
-    color: var(--tinta);
-    letter-spacing: var(--ls-rotulo);
-    text-transform: uppercase;
 }
 
 .page-header h2 {
@@ -1555,15 +1576,10 @@ main,
     margin: 0 auto;
 }
 
-/* Sem o espacejamento de .page-header h1, de propósito. Lá o título é
-   versal, e 0.12em é o respiro que caixa alta pede; aqui é caixa baixa, e o
-   mesmo valor entre minúsculas desmonta a palavra em letras soltas. */
 .contact-page h1 {
     text-align: center;
     font-size: var(--t-3xl);
-    font-weight: var(--font-weight-light);
     margin-bottom: var(--e-5);
-    color: var(--tinta);
 }
 
 .contact-page p {
@@ -1682,13 +1698,9 @@ main,
     text-align: center;
 }
 
-/* Caixa baixa, então sem espacejamento de versal, pelo mesmo motivo do
-   título de contato. */
 .not-found h1 {
     font-size: var(--t-3xl);
-    font-weight: var(--font-weight-light);
     margin-bottom: var(--e-5);
-    color: var(--tinta);
 }
 
 /* A metade em inglês vem depois de um traço, para ficar claro que é a mesma
