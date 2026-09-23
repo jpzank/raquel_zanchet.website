@@ -607,7 +607,12 @@ main,
     padding: 0;
 }
 
-.indice a {
+/* A classe não é enfeite. Sem ela o link cai em `main a:not([class])`, a
+   rede de segurança do texto corrido, que tem especificidade maior que
+   `.indice a` e ganhava: o índice inteiro saía em vermelho, o número deixava
+   de se destacar do nome, e o hover não mudava nada, porque pintava de
+   vermelho o que já era vermelho. */
+.indice-link {
     display: inline-block;
     padding: var(--e-2) 0;
     font-size: var(--t-sm);
@@ -616,7 +621,7 @@ main,
     transition: color 0.3s ease;
 }
 
-.indice a:hover {
+.indice-link:hover {
     color: var(--marca);
 }
 
