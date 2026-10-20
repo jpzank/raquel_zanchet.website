@@ -12,15 +12,32 @@ og_description: "Hospitality design, curadoria de FF&E e implantação para hot�
 ---
 
 <section class="hero">
-    <img src="/images/logo-raquel-zanchet.svg" alt="Raquel Zanchet Hospitality" class="logo" width="366" height="84" fetchpriority="high" decoding="async">
+    <div class="hero-texto">
+        <img src="/images/logo-raquel-zanchet.svg" alt="Raquel Zanchet Hospitality" class="logo" width="366" height="84" fetchpriority="high" decoding="async">
 
-    <h1>Desenvolvimento de produto hoteleiro, do conceito à operação.</h1>
-    <p class="hero-sub">Conceito, design de interiores, curadoria de FF&amp;E e implantação. O projeto acompanhado até o hotel estar pronto para operar.</p>
+        <h1>Desenvolvimento de produto hoteleiro, do conceito à operação.</h1>
+        <p class="hero-sub">Conceito, design de interiores, curadoria de FF&amp;E e implantação. O projeto acompanhado até o hotel estar pronto para operar.</p>
 
-    <div class="hero-acoes">
-        <a href="/pages/projetos/" class="botao botao-cheio">Ver projetos</a>
-        <a href="/pages/contato/" class="botao botao-vazio">Conversar sobre um projeto</a>
+        <div class="hero-acoes">
+            <a href="/pages/projetos/" class="botao botao-cheio">Ver projetos</a>
+            <a href="/pages/contato/" class="botao botao-vazio">Conversar sobre um projeto</a>
+        </div>
     </div>
+
+    {%- comment -%}
+      A imagem parada é o que carrega: é ela que aparece sem JavaScript e
+      para quem pediu menos movimento. O vídeo só entra pelo main.js, por
+      cima dela, quando o movimento é permitido.
+    {%- endcomment %}
+    <figure class="hero-midia" data-video="/video/home-canal">
+        <div class="hero-quadro">
+            <picture>
+                <source type="image/webp" sizes="(min-width: 1041px) 416px, (max-width: 480px) calc(100vw - 32px), 416px" srcset="/images/home-canal-480.webp 480w, /images/home-canal-720.webp 720w, /images/home-canal-960.webp 960w">
+                <img src="/images/home-canal.jpg" alt="Canal da piscina natural do Jardim da Amazônia Lodge, com a mata refletida na água" width="960" height="1200" decoding="async">
+            </picture>
+        </div>
+        <figcaption>Jardim da Amazônia, Mato Grosso</figcaption>
+    </figure>
 
     <ul class="provas">
         <li><span class="prova-valor">1997</span><span class="prova-rotulo">Jardim da Amazônia, em operação</span></li>

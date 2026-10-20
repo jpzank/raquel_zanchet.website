@@ -134,17 +134,23 @@ def neon():
     write('3c-neon', f, (w, h))
 
 
-# --- 4. Canal da piscina natural, do acervo do Jardim. Vertical, 9:16. -------
-def canal():
+# --- 4. Canal da piscina natural, do acervo do Jardim. -----------------------
+# O mesmo canal sai em dois recortes: 9:16 para Stories e 4:5 para o topo da
+# home do site. O contorno da água é desenhado nas coordenadas da foto
+# original, 1600x2400, e deslocado para cada recorte.
+AGUA_CANAL = [(648, 1752), (768, 1740), (1056, 1872), (1296, 2040), (1392, 2184), (1416, 2400),
+              (0, 2400), (0, 2136), (180, 2064), (456, 1968)]
+
+
+def canal(nome='3d-canal', recorte=(125, 0, 1475, 2400), saida=(1080, 1920)):
     # foto do acervo do lodge, fora do repositório (ver README)
-    src = Image.open('acervo/canal-piscina.jpg').convert('RGB').crop((125, 0, 1475, 2400))
+    x0, y0 = recorte[0], recorte[1]
+    src = Image.open('acervo/canal-piscina.jpg').convert('RGB').crop(recorte)
     a = np.asarray(src).astype(np.float32)
     h, w, _ = a.shape
     yy, xx = np.mgrid[0:h, 0:w].astype(np.float32)
-    # o espelho d'água, das margens até a base; o recorte desloca x em 125
-    m = polymask((h, w), [(523, 1752), (643, 1740), (931, 1872), (1171, 2040), (1267, 2184), (1291, 2400),
-                          (0, 2400), (0, 2136), (55, 2064), (331, 1968)], 14)
-    prof = np.clip((yy - 1740) / (h - 1740), 0, 1)
+    m = polymask((h, w), [(x - x0, y - y0) for x, y in AGUA_CANAL], 14)
+    prof = np.clip((yy - (1740 - y0)) / (h - (1740 - y0)), 0, 1)
     rng = np.random.default_rng(11)
     fase = blur(rng.random((h // 4, w // 4)).astype(np.float32), 8)
     fase = np.asarray(Image.fromarray((fase * 255).astype(np.uint8)).resize((w, h), Image.BILINEAR)).astype(np.float32) / 255 * TAU * 3
@@ -156,12 +162,16 @@ def canal():
               + np.sin(yy / 40 - xx / 260 + ph + fase * 0.5) * 1.4 * prof) * m
         dy = np.sin(xx / 70 + yy / 30 + ph + fase) * 0.9 * prof * m
         out = remap(a, dx, dy) * (1 + 0.05 * np.sin(xx / 30 + yy / 14 + ph * 2 + fase)[..., None] * luz[..., None])
-        im = Image.fromarray(np.clip(out, 0, 255).astype(np.uint8)).resize((1080, 1920), Image.LANCZOS)
+        im = Image.fromarray(np.clip(out, 0, 255).astype(np.uint8)).resize(saida, Image.LANCZOS)
         return np.asarray(im).astype(np.float32)
-    write('3d-canal', f, (1080, 1920))
+    write(nome, f, saida)
+
+
+def canal_home():
+    canal('home-canal', recorte=(0, 400, 1600, 2400), saida=(960, 1200))
 
 
 if __name__ == '__main__':
-    todos = {'agua': agua, 'rede': rede, 'neon': neon, 'canal': canal}
+    todos = {'agua': agua, 'rede': rede, 'neon': neon, 'canal': canal, 'home': canal_home}
     for nome in (sys.argv[3:] or todos):
         todos[nome]()

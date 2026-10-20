@@ -10,6 +10,7 @@ lodge: o ambiente da margem do rio Claro e o canto do tiê-bicudo.
 | `videos/2-trinta-anos.mp4` | 1080x1920, Reels | 27s | ambiente, canto quando a ave aparece |
 | `videos/3a-agua-loop.mp4`, `3b-rede-loop.mp4`, `3c-neon-loop.mp4` | tamanho da foto | loop de 6s | mudo |
 | `videos/3d-canal-loop.mp4` | 1080x1920, Stories | loop de 6s | mudo |
+| `/video/home-canal.mp4`, `.webm` | 960x1200, topo da home | loop de 6s | mudo |
 | `videos/4-quarto-prototipo.mp4` | 1280x720 | 19s | ambiente |
 
 **1. Por um fio.** Um fio marsala atravessa o filme. Cada foto nasce dele e
@@ -70,6 +71,12 @@ sh som.sh
 python3 cinemagraph.py ../../images ../videos            # os quatro loops
 python3 cinemagraph.py ../../images ../videos canal      # só um deles
 ```
+
+O recorte do topo da home sai com `python3 cinemagraph.py ../../images /tmp home`
+e depois é comprimido para a web, sem áudio: H.264 em CRF 26 para
+`/video/home-canal.mp4` e VP9 em CRF 45 para `/video/home-canal.webm`, os dois
+perto de 600KB. As fotos paradas em `/images/home-canal-*.webp` são o primeiro
+quadro do loop, então a troca da foto pelo vídeo não pula.
 
 `render.js` chama `window.seek(t)` quadro a quadro e passa cada captura para
 o ffmpeg, então o vídeo não depende da velocidade da máquina. Para ajustar
