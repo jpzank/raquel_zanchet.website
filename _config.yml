@@ -7,6 +7,8 @@ lang: pt-BR
 exclude:
   - README.md
   - .gitignore
+  # Peças de vídeo e o código que as gera. Material de divulgação, não do site.
+  - motion
 
 # As URLs vêm da própria estrutura de pastas (pages/projetos/index.html ->
 # /pages/projetos/), então não há permalink a configurar.

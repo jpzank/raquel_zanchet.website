@@ -1,0 +1,187 @@
+<!doctype html>
+<html><head><meta charset="utf-8">
+<link rel="stylesheet" href="fonts/fonts.css">
+<style>html, body { margin: 0; background: #fff; overflow: hidden; } canvas { display: block; }</style>
+</head><body>
+<canvas id="c" width="1280" height="720"></canvas>
+<script>
+const W = 1280, H = 720, MARCA = '#965454', TINTA = '#333', SUAVE = '#666', FIO = '#cfcfcf';
+const ease = t => t < 0.5 ? 4 * t * t * t : 1 - Math.pow(-2 * t + 2, 3) / 2;
+const clamp = (x, a = 0, b = 1) => Math.min(b, Math.max(a, x));
+const seg = (t, a, b) => clamp((t - a) / (b - a));
+const cv = document.getElementById('c'), cx = cv.getContext('2d');
+
+// Planta do quarto, vista de cima. Interior: x 120..720, y 130..610.
+const R = { x: 120, y: 130, w: 600, h: 480 };
+const BED = { x: 310, y: 142, w: 220, h: 262 };
+
+function rr(x, y, w, h, r) { cx.beginPath(); cx.roundRect(x, y, w, h, r); }
+function stroke(w = 1.25, c = TINTA) { cx.lineWidth = w; cx.strokeStyle = c; cx.stroke(); }
+function fill(c) { cx.fillStyle = c; cx.fill(); }
+function shadow(on) { cx.shadowColor = on ? 'rgba(0,0,0,0.13)' : 'transparent'; cx.shadowBlur = on ? 14 : 0; cx.shadowOffsetY = on ? 4 : 0; cx.shadowOffsetX = on ? 2 : 0; }
+
+const ITEMS = [
+  { nome: 'Tapete', draw() {
+      rr(262, 300, 316, 190, 2); fill('#EFE9E0'); shadow(false); stroke(1, '#b9ad9c');
+      cx.save(); cx.strokeStyle = '#d6ccbd'; cx.lineWidth = 1;
+      for (let x = 272; x < 570; x += 9) { cx.beginPath(); cx.moveTo(x, 490); cx.lineTo(x, 497); cx.stroke(); cx.beginPath(); cx.moveTo(x, 300); cx.lineTo(x, 293); cx.stroke(); }
+      cx.restore(); } },
+  { nome: 'Cama e cabeceira de ferro', draw() {
+      rr(BED.x, BED.y + 14, BED.w, BED.h - 14, 3); fill('#F6F4F0'); shadow(false); stroke();
+      // cabeceira: o losango do ferro forjado do Zank, em planta vira uma faixa rendada
+      cx.fillStyle = '#3a3532'; cx.fillRect(BED.x - 6, BED.y, BED.w + 12, 9);
+      cx.save(); cx.strokeStyle = '#fff'; cx.lineWidth = 1;
+      for (let x = BED.x; x < BED.x + BED.w; x += 12) { cx.beginPath(); cx.moveTo(x, BED.y + 4.5); cx.lineTo(x + 6, BED.y + 1.5); cx.lineTo(x + 12, BED.y + 4.5); cx.lineTo(x + 6, BED.y + 7.5); cx.closePath(); cx.stroke(); }
+      cx.restore(); } },
+  { nome: 'Enxoval', draw() {
+      rr(BED.x + 4, BED.y + 110, BED.w - 8, BED.h - 114, 2); fill('#ffffff'); shadow(false); stroke(1, '#bdbdbd');
+      cx.beginPath(); cx.moveTo(BED.x + 4, BED.y + 136); cx.lineTo(BED.x + BED.w - 4, BED.y + 136); stroke(1, '#cfcfcf');
+      rr(BED.x + 4, BED.y + 210, BED.w - 8, 34, 1); fill('#E6DED2'); stroke(0.75, '#c4b8a6'); } },
+  { nome: 'Travesseiros', draw() {
+      for (const x of [BED.x + 14, BED.x + 116]) { rr(x, BED.y + 26, 90, 50, 14); fill('#fff'); shadow(false); stroke(1, '#bdbdbd'); } } },
+  { nome: 'Almofadas, Joel Reis Tecelagem', draw() {
+      for (const [x, y, w, c] of [[BED.x + 46, BED.y + 70, 58, '#B8A487'], [BED.x + 116, BED.y + 70, 58, '#C9B99F'], [BED.x + 92, BED.y + 84, 36, '#8F7B62']]) {
+        rr(x, y, w, 30, 5); fill(c); shadow(false);
+        cx.save(); cx.clip(); cx.strokeStyle = 'rgba(255,255,255,0.28)'; cx.lineWidth = 1;
+        for (let k = -40; k < 80; k += 4) { cx.beginPath(); cx.moveTo(x + k, y); cx.lineTo(x + k + 30, y + 30); cx.stroke(); }
+        cx.restore();
+      } } },
+  { nome: 'Mesas de cabeceira', draw() {
+      for (const x of [252, 546]) { rr(x, 146, 44, 44, 2); fill('#D8C8B2'); shadow(false); stroke(1, '#a8957b'); } } },
+  { nome: 'Iluminação', glow: true, draw() {
+      for (const x of [274, 568]) {
+        const g = cx.createRadialGradient(x, 168, 2, x, 168, 70); g.addColorStop(0, 'rgba(255,214,150,0.55)'); g.addColorStop(1, 'rgba(255,214,150,0)');
+        cx.fillStyle = g; cx.fillRect(x - 70, 98, 140, 140);
+        cx.beginPath(); cx.arc(x, 168, 13, 0, Math.PI * 2); fill('#FFF8EC'); stroke(1, '#a8957b');
+      } } },
+  { nome: 'Poltrona e manta', draw() {
+      cx.save(); cx.translate(205, 520); cx.rotate(-0.42);
+      rr(-46, -44, 92, 88, 18); fill('#C2B6A6'); shadow(false); stroke(1, '#8e8170');
+      rr(-32, -24, 64, 60, 10); fill('#D6CCBE');
+      cx.beginPath(); cx.moveTo(-46, 10); cx.lineTo(46, -6); cx.lineTo(46, 24); cx.lineTo(-46, 40); cx.closePath(); fill('rgba(150,84,84,0.0)');
+      rr(8, -40, 30, 80, 4); fill('#9C8B73');
+      cx.restore(); } },
+  { nome: 'Amenities', draw() {
+      rr(338, 418, 164, 34, 3); fill('#D8C8B2'); shadow(false); stroke(1, '#a8957b');
+      rr(386, 422, 68, 26, 3); fill('#fff'); stroke(0.75, '#bdbdbd');
+      for (const [x, r] of [[400, 6], [416, 5], [432, 6], [445, 4]]) { cx.beginPath(); cx.arc(x, 435, r, 0, Math.PI * 2); fill('#EDE7DD'); stroke(0.75, '#a8957b'); } } },
+  { nome: 'Planta', draw() {
+      cx.beginPath(); cx.arc(672, 562, 24, 0, Math.PI * 2); fill('#CDBBA3'); shadow(false); stroke(1, '#a8957b');
+      cx.save(); cx.translate(672, 562);
+      for (let k = 0; k < 9; k++) { cx.rotate(Math.PI * 2 / 9); cx.beginPath(); cx.ellipse(22, 0, 24, 8, 0, 0, Math.PI * 2); fill(k % 2 ? '#5E7356' : '#728A68'); }
+      cx.restore(); } },
+];
+const T0 = 1.4, STEP = 0.85;
+ITEMS.forEach((it, i) => { it.t = T0 + i * STEP; it.j = [[-14, 9, -0.03], [12, -10, 0.025], [-9, -12, 0.02], [10, 12, -0.03], [-12, 8, 0.03]][i % 5]; });
+const END_PLAN = T0 + ITEMS.length * STEP + 1.3;   // ~11.2s
+
+let foto;
+function load(src) { return new Promise(r => { const i = new Image(); i.onload = () => r(i); i.src = src; }); }
+window.ready = (async () => {
+  await document.fonts.load('26px "Cormorant Garamond"'); await document.fonts.load('italic 30px "Cormorant Garamond"');
+  await document.fonts.load('300 14px Jost'); await document.fonts.load('400 14px Jost');
+  foto = await load('../../images/card-projetos-1199.webp');
+})();
+
+function walls(k) {
+  // parede dupla desenhada como um traço que percorre o perímetro
+  const p = [[R.x, R.y], [R.x + R.w, R.y], [R.x + R.w, R.y + R.h], [R.x, R.y + R.h], [R.x, R.y]];
+  const per = 2 * (R.w + R.h);
+  for (const off of [0, 10]) {
+    cx.beginPath(); let left = (per + 8 * off) * k;
+    const q = p.map(([x, y]) => [x + (x === R.x ? -off : off), y + (y === R.y ? -off : off)]);
+    cx.moveTo(...q[0]);
+    for (let i = 1; i < q.length && left > 0; i++) {
+      const [ax, ay] = q[i - 1], [bx, by] = q[i]; const L = Math.hypot(bx - ax, by - ay); const f = Math.min(1, left / L);
+      cx.lineTo(ax + (bx - ax) * f, ay + (by - ay) * f); left -= L;
+    }
+    stroke(1.25);
+  }
+  if (k < 1) return;
+  // janela na parede esquerda e porta embaixo à direita
+  cx.fillStyle = '#fff'; cx.fillRect(R.x - 12, 260, 14, 200);
+  cx.beginPath(); cx.moveTo(R.x - 10, 260); cx.lineTo(R.x - 10, 460); cx.moveTo(R.x - 5, 260); cx.lineTo(R.x - 5, 460); cx.moveTo(R.x, 260); cx.lineTo(R.x, 460); stroke(1);
+  cx.fillStyle = '#fff'; cx.fillRect(590, R.y + R.h - 2, 92, 14);
+  cx.beginPath(); cx.moveTo(682, R.y + R.h); cx.lineTo(682, R.y + R.h - 90); stroke(1);
+  cx.beginPath(); cx.arc(682, R.y + R.h, 90, Math.PI, Math.PI * 1.5); cx.setLineDash([3, 4]); stroke(0.75, '#999'); cx.setLineDash([]);
+}
+
+function sunlight(t, a) {
+  // a luz da janela atravessa o piso: o tempo do dia passando enquanto o quarto é montado
+  const s = 0.15 + 0.09 * (t / END_PLAN);
+  cx.save(); cx.globalAlpha = a;
+  cx.beginPath(); cx.moveTo(R.x, 262); cx.lineTo(R.x, 458);
+  cx.lineTo(R.x + 340, 458 + 340 * s * 1.6); cx.lineTo(R.x + 340, 262 + 340 * s * 0.6); cx.closePath();
+  const g = cx.createLinearGradient(R.x, 0, R.x + 340, 0); g.addColorStop(0, 'rgba(250,232,200,0.75)'); g.addColorStop(1, 'rgba(250,232,200,0)');
+  cx.fillStyle = g; cx.fill(); cx.restore();
+}
+
+function lista(t, a) {
+  cx.save(); cx.globalAlpha = a; cx.textBaseline = 'alphabetic';
+  cx.font = '400 14px Jost'; cx.fillStyle = SUAVE; cx.letterSpacing = '2.5px';
+  cx.fillText('IMPLANTAÇÃO', 820, 150);
+  cx.letterSpacing = '0px'; cx.font = '34px "Cormorant Garamond"'; cx.fillStyle = TINTA;
+  cx.fillText('Quarto-protótipo', 818, 192);
+  cx.fillStyle = FIO; cx.fillRect(820, 214, 380, 1);
+  ITEMS.forEach((it, i) => {
+    const k = ease(seg(t, it.t + 0.1, it.t + 0.5)); if (!k) return;
+    const y = 252 + i * 36;
+    cx.globalAlpha = a * k;
+    cx.font = '22px "Cormorant Garamond"'; cx.fillStyle = MARCA;   // numeração de ordem: um dos três usos do vermelho
+    cx.fillText(String(i + 1).padStart(2, '0'), 820, y);
+    cx.font = '300 17px Jost'; cx.fillStyle = TINTA;
+    cx.fillText(it.nome, 862 + (1 - k) * 6, y);
+  });
+  cx.restore();
+}
+
+window.seek = t => {
+  cx.globalAlpha = 1; shadow(false);
+  cx.fillStyle = '#fff'; cx.fillRect(0, 0, W, H);
+
+  const out = 1 - ease(seg(t, END_PLAN, END_PLAN + 0.7));
+  if (out > 0) {
+    cx.save(); cx.globalAlpha = out;
+    cx.fillStyle = '#FBFAF8'; cx.fillRect(R.x, R.y, R.w, R.h);
+    sunlight(t, seg(t, 0.9, 1.6) * out);
+    walls(ease(seg(t, 0.1, 1.2)));
+    // stop-motion: a peça entra torta, como a mão que a coloca, e assenta dois quadros depois
+    const tq = Math.floor(t * 12) / 12;
+    for (const it of ITEMS) {
+      if (tq < it.t) continue;
+      const f = Math.round((tq - it.t) * 12);
+      const m = f === 0 ? 1 : f === 1 ? 0.35 : 0;
+      cx.save();
+      cx.translate(420 + it.j[0] * m, 376 + it.j[1] * m); cx.rotate(it.j[2] * m); cx.translate(-420, -376);
+      cx.shadowColor = 'rgba(0,0,0,0.12)'; cx.shadowBlur = 12 + 10 * m; cx.shadowOffsetY = 3 + 6 * m; cx.shadowOffsetX = 2;
+      if (it.glow) shadow(false);
+      it.draw();
+      cx.restore();
+    }
+    shadow(false);
+    lista(t, seg(t, 0.6, 1.4) * out);
+    cx.restore();
+  }
+
+  // a planta vira hotel: o fio abre a foto do quarto pronto, mesma gramática do filme 1
+  const BW = 1120, BH = 266, BX = 80, BY = 196, LY = BY + BH / 2, A = END_PLAN + 0.5;
+  if (t >= A) {
+    const lk = ease(seg(t, A, A + 1.2));
+    const o = ease(seg(t, A + 1.2, A + 2.2));
+    const hgt = BH * o;
+    if (hgt < BH) { cx.fillStyle = MARCA; cx.globalAlpha = 1 - clamp(hgt / 40); cx.fillRect(BX, LY - 0.75, BW * lk, 1.5); cx.globalAlpha = 1; }
+    if (hgt > 0) {
+      const z = 1.08 - 0.05 * seg(t, A + 1.2, A + 7);
+      const sc = Math.max(BW / foto.width, BH / foto.height) * z, iw = foto.width * sc, ih = foto.height * sc;
+      cx.save(); cx.beginPath(); cx.rect(BX, LY - hgt / 2, BW, hgt); cx.clip();
+      cx.drawImage(foto, BX + (BW - iw) / 2, BY + (BH - ih) * 0.42, iw, ih); cx.restore();
+    }
+    const c = ease(seg(t, A + 2.0, A + 2.8));
+    cx.globalAlpha = c;
+    cx.font = '38px "Cormorant Garamond"'; cx.fillStyle = TINTA; cx.fillText('Pronto para operar.', BX, BY + BH + 58 - (1 - c) * 6);
+    cx.font = '300 15px Jost'; cx.fillStyle = SUAVE; cx.letterSpacing = '2.7px'; cx.textAlign = 'right';
+    cx.fillText('ZANK HOTEL BOUTIQUE, SALVADOR', BX + BW, BY + BH + 52 - (1 - c) * 6);
+    cx.textAlign = 'left'; cx.letterSpacing = '0px'; cx.globalAlpha = 1;
+  }
+};
+</script></body></html>

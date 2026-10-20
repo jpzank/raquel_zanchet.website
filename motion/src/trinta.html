@@ -1,0 +1,156 @@
+<!doctype html>
+<html><head><meta charset="utf-8">
+<link rel="stylesheet" href="fonts/fonts.css">
+<style>
+  html, body { margin: 0; background: #fff; overflow: hidden; }
+  #stage { position: relative; width: 1080px; height: 1920px; background: #fff; }
+  .abs { position: absolute; }
+  #rotulo { top: 290px; left: 0; right: 0; text-align: center; font: 300 30px Jost, sans-serif; letter-spacing: 0.22em; color: #666; }
+  #ano { top: 350px; left: 0; right: 0; display: flex; justify-content: center; font-family: 'Cormorant Garamond', serif; font-size: 300px; line-height: 1; color: #333; font-variant-numeric: lining-nums tabular-nums; font-feature-settings: "lnum" 1, "tnum" 1; }
+  .col { height: 1em; overflow: hidden; position: relative; }
+  .strip { display: flex; flex-direction: column; will-change: transform; }
+  .strip span { height: 1em; display: block; text-align: center; }
+  .win { overflow: hidden; }
+  .win img { width: 100%; height: 100%; object-fit: cover; display: block; transform-origin: 50% 50%; }
+  .fio { height: 2px; background: #965454; }
+  .card { box-shadow: 0 18px 40px rgba(0,0,0,0.12), 0 2px 6px rgba(0,0,0,0.08); background: #fff; }
+  .card img { width: 100%; display: block; }
+  .nome { left: 90px; right: 90px; text-align: center; font: 58px 'Cormorant Garamond', serif; color: #333; }
+  .sub { left: 90px; right: 90px; text-align: center; font: 300 28px Jost, sans-serif; letter-spacing: 0.18em; text-transform: uppercase; color: #666; }
+  #fecho { top: 1060px; left: 90px; right: 90px; text-align: center; font: italic 64px/1.2 'Cormorant Garamond', serif; color: #333; }
+  #logo { left: 50%; top: 1460px; width: 600px; transform: translateX(-50%); }
+</style></head>
+<body><div id="stage">
+  <div id="rotulo" class="abs">TRAJETÓRIA</div>
+  <div id="ano" class="abs"></div>
+  <div id="fecho" class="abs">Quase trinta anos<br>de produto hoteleiro.</div>
+  <img id="logo" class="abs" src="../../images/logo-raquel-zanchet.svg">
+</div>
+<script>
+const ease = t => t < 0.5 ? 4 * t * t * t : 1 - Math.pow(-2 * t + 2, 3) / 2;
+const clamp = (x, a = 0, b = 1) => Math.min(b, Math.max(a, x));
+const seg = (t, a, b) => clamp((t - a) / (b - a));
+const stage = document.getElementById('stage');
+const el = (tag, cls, parent = stage) => { const e = document.createElement(tag); e.className = cls; parent.appendChild(e); return e; };
+
+// O contador: cada coluna é uma fita de dígitos que rola, como um hodômetro.
+const ano = document.getElementById('ano');
+const cols = [0, 1, 2, 3].map(() => {
+  const c = el('div', 'col', ano), s = el('div', 'strip', c);
+  for (let k = 0; k < 40; k++) el('span', '', s).textContent = k % 10;
+  return s;
+});
+// [ano, início da rolagem, fim]
+const ROLLS = [[1990, 0, 0], [1997, 0.3, 1.4], [1999, 4.3, 5.1], [2007, 7.9, 8.8], [2010, 11.5, 12.3], [2011, 14.5, 15.2], [2022, 17.9, 18.9], [2026, 21.9, 22.8]];
+// posição acumulada de cada coluna: sempre rola para a frente, dando a volta no 9
+const pos = ROLLS.map(() => [0, 0, 0, 0]);
+ROLLS.forEach(([y], i) => {
+  const d = String(y).split('').map(Number);
+  pos[i] = d.map((v, k) => i === 0 ? v : pos[i - 1][k] + ((v - pos[i - 1][k] % 10 + 10) % 10));
+});
+
+// Os marcos. kind 'win' abre do fio; kind 'card' entra como recorte de papel.
+const M = [
+  { kind: 'win', src: '../../images/bem-estar-deck.jpg', w: 600, h: 900, a: 1.2, b: 4.3, nome: 'Jardim da Amazônia Lodge', sub: 'São José do Rio Claro, MT' },
+  { kind: 'win', src: '../../images/jardim-amazonia-lodge-1280.webp', w: 900, h: 440, a: 5.0, b: 7.9, nome: 'Roteiro 3 Ecossistemas', sub: 'Pantanal, Cerrado e Amazônia' },
+  { kind: 'win', src: '../../images/zank-hotel-1280.webp', w: 900, h: 440, a: 8.7, b: 11.5, nome: 'Zank Hotel Boutique', sub: 'Retrofit, Salvador' },
+  { kind: 'card', src: '../../images/clipping-zank-new-york-times.jpg', w: 800, a: 12.2, b: 17.9, rot: -2.2, dx: -30, dy: -40, nome: 'The New York Times', sub: 'Caderno Travel, 2010' },
+  { kind: 'card', src: '../../images/clipping-zank-premio-casa-claudia.jpg', w: 800, a: 15.1, b: 17.9, rot: 1.8, dx: 30, dy: 60, nome: 'Prêmio Casa Claudia', sub: 'Design de interiores, hotéis' },
+  { kind: 'win', src: '../../images/tie-bicudo.jpg', w: 900, h: 560, a: 18.8, b: 21.9, nome: 'Estação de Pesquisa', sub: 'Jardim da Amazônia, 2022' },
+];
+const CY = 1160; // centro da área de imagem
+M.forEach(m => {
+  if (m.kind === 'win') {
+    m.fio = el('div', 'abs fio'); m.fio.style.top = (CY - 1) + 'px';
+    m.box = el('div', 'abs win');
+    Object.assign(m.box.style, { left: (1080 - m.w) / 2 + 'px', top: CY - m.h / 2 + 'px', width: m.w + 'px', height: m.h + 'px' });
+    m.img = el('img', '', m.box); m.img.src = m.src;
+    m.capY = CY + m.h / 2 + 56;
+  } else {
+    m.box = el('div', 'abs card'); m.box.style.width = m.w + 'px';
+    m.img = el('img', '', m.box); m.img.src = m.src;
+    m.h = m.w * 563 / 750;
+    m.capY = CY + 380 + 30;
+  }
+  m.nomeEl = el('div', 'abs nome'); m.nomeEl.textContent = m.nome;
+  m.subEl = el('div', 'abs sub'); m.subEl.textContent = m.sub;
+});
+
+window.ready = (async () => {
+  await document.fonts.load('300px "Cormorant Garamond"'); await document.fonts.load('italic 64px "Cormorant Garamond"');
+  await document.fonts.load('300 26px Jost');
+  await Promise.all([...document.images].map(i => i.complete ? 0 : new Promise(r => i.onload = r)));
+})();
+
+window.seek = t => {
+  // contador
+  let i = 0; while (i + 1 < ROLLS.length && t >= ROLLS[i + 1][1]) i++;
+  const nx = ROLLS[i + 1];
+  for (let k = 0; k < 4; k++) {
+    let p = pos[i][k];
+    if (nx) {
+      // as casas da esquerda rolam primeiro, as unidades por último
+      const [, a, b] = nx, st = a + (b - a) * 0.12 * k, en = b - (b - a) * 0.12 * (3 - k);
+      p += (pos[i + 1][k] - pos[i][k]) * ease(seg(t, st, en));
+    }
+    cols[k].style.transform = `translateY(${-p}em)`;
+  }
+  const intro = ease(seg(t, 0, 0.9));
+  ano.style.opacity = intro; document.getElementById('rotulo').style.opacity = intro;
+
+  // marcos
+  let capCard = null;
+  for (const m of M) {
+    const on = t >= m.a && t < m.b + 0.01;
+    const local = t - m.a, dur = m.b - m.a;
+    let capA = 0;
+    if (m.kind === 'win') {
+      // o fio se desenha a partir do centro, a janela abre na vertical e fecha de volta no fio
+      const lk = ease(seg(local, 0, 0.55));
+      const o = ease(seg(local, 0.45, 1.25)), c = ease(seg(local, dur - 0.7, dur));
+      const hgt = m.h * o * (1 - c);
+      const lw = m.w * lk;
+      m.fio.style.left = (1080 - lw) / 2 + 'px'; m.fio.style.width = lw + 'px';
+      m.fio.style.opacity = on ? 1 - clamp(hgt / 50) : 0;
+      const inset = (m.h - hgt) / 2;
+      m.box.style.clipPath = `inset(${inset}px 0 ${inset}px 0)`;
+      m.box.style.visibility = on && hgt > 0.5 ? 'visible' : 'hidden';
+      m.img.style.transform = `scale(${1.1 - 0.08 * seg(local, 0, dur)})`;
+      capA = seg(local, 0.9, 1.5) * (1 - seg(local, dur - 1.0, dur - 0.6));
+    } else {
+      // recorte de papel: sobe torto, assenta, e sai junto com o outro no fim
+      const k = ease(seg(local, 0, 0.9)), out = ease(seg(t, m.b - 0.8, m.b));
+      const y = CY - m.h / 2 + m.dy + (1 - k) * 700 + out * 40;
+      Object.assign(m.box.style, {
+        left: (1080 - m.w) / 2 + m.dx + 'px', top: y + 'px',
+        transform: `rotate(${m.rot * (0.4 + 0.6 * k) + (1 - k) * 5}deg)`,
+        opacity: on ? (1 - out) : 0, visibility: on ? 'visible' : 'hidden',
+      });
+      if (on && local > 0.5) capCard = m;
+      m.nomeEl.style.opacity = m.subEl.style.opacity = 0;
+    }
+    if (m.kind === 'win') {
+      m.nomeEl.style.opacity = m.subEl.style.opacity = on ? capA : 0;
+      const dy = (1 - capA) * 8;
+      m.nomeEl.style.top = m.capY + dy + 'px'; m.subEl.style.top = m.capY + 82 + dy + 'px';
+    }
+  }
+  // legenda dos recortes: a do papel de cima vale
+  if (capCard) {
+    const m = capCard, local = t - m.a;
+    const a = seg(local, 0.6, 1.2) * (1 - seg(t, m.b - 0.9, m.b - 0.5));
+    const prev = M.find(x => x.kind === 'card' && x !== m && t >= x.a && x.a < m.a);
+    const swap = prev ? 1 : 1;
+    m.nomeEl.style.opacity = m.subEl.style.opacity = a * swap;
+    m.nomeEl.style.top = m.capY + 60 + (1 - a) * 8 + 'px'; m.subEl.style.top = m.capY + 142 + (1 - a) * 8 + 'px';
+  }
+
+  // fecho: o contador para em 2026, a frase entra, o logo assina
+  const f = ease(seg(t, 23.0, 24.0));
+  const fecho = document.getElementById('fecho');
+  fecho.style.opacity = f; fecho.style.transform = `translateY(${(1 - f) * 10}px)`;
+  const lg = document.getElementById('logo');
+  const l = ease(seg(t, 24.2, 25.2));
+  lg.style.opacity = l; lg.style.transform = `translateX(-50%) translateY(${(1 - l) * 10}px)`;
+};
+</script></body></html>
