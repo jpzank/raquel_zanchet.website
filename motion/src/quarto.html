@@ -80,7 +80,7 @@ function load(src) { return new Promise(r => { const i = new Image(); i.onload =
 window.ready = (async () => {
   await document.fonts.load('26px "Cormorant Garamond"'); await document.fonts.load('italic 30px "Cormorant Garamond"');
   await document.fonts.load('300 14px Jost'); await document.fonts.load('400 14px Jost');
-  foto = await load('../../images/card-projetos-1199.webp');
+  foto = await load('acervo/bangalo-jardim.jpg');   // acervo do Jardim, fora do repositório
 })();
 
 function walls(k) {
@@ -174,13 +174,13 @@ window.seek = t => {
       const z = 1.08 - 0.05 * seg(t, A + 1.2, A + 7);
       const sc = Math.max(BW / foto.width, BH / foto.height) * z, iw = foto.width * sc, ih = foto.height * sc;
       cx.save(); cx.beginPath(); cx.rect(BX, LY - hgt / 2, BW, hgt); cx.clip();
-      cx.drawImage(foto, BX + (BW - iw) / 2, BY + (BH - ih) * 0.42, iw, ih); cx.restore();
+      cx.drawImage(foto, BX + (BW - iw) / 2, BY + (BH - ih) * 0.64, iw, ih); cx.restore();
     }
     const c = ease(seg(t, A + 2.0, A + 2.8));
     cx.globalAlpha = c;
     cx.font = '38px "Cormorant Garamond"'; cx.fillStyle = TINTA; cx.fillText('Pronto para operar.', BX, BY + BH + 58 - (1 - c) * 6);
     cx.font = '300 15px Jost'; cx.fillStyle = SUAVE; cx.letterSpacing = '2.7px'; cx.textAlign = 'right';
-    cx.fillText('ZANK HOTEL BOUTIQUE, SALVADOR', BX + BW, BY + BH + 52 - (1 - c) * 6);
+    cx.fillText('BANGALÔ JARDIM, JARDIM DA AMAZÔNIA', BX + BW, BY + BH + 52 - (1 - c) * 6);
     cx.textAlign = 'left'; cx.letterSpacing = '0px'; cx.globalAlpha = 1;
   }
 };

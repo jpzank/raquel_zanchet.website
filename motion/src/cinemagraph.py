@@ -134,6 +134,34 @@ def neon():
     write('3c-neon', f, (w, h))
 
 
+# --- 4. Canal da piscina natural, do acervo do Jardim. Vertical, 9:16. -------
+def canal():
+    # foto do acervo do lodge, fora do repositório (ver README)
+    src = Image.open('acervo/canal-piscina.jpg').convert('RGB').crop((125, 0, 1475, 2400))
+    a = np.asarray(src).astype(np.float32)
+    h, w, _ = a.shape
+    yy, xx = np.mgrid[0:h, 0:w].astype(np.float32)
+    # o espelho d'água, das margens até a base; o recorte desloca x em 125
+    m = polymask((h, w), [(523, 1752), (643, 1740), (931, 1872), (1171, 2040), (1267, 2184), (1291, 2400),
+                          (0, 2400), (0, 2136), (55, 2064), (331, 1968)], 14)
+    prof = np.clip((yy - 1740) / (h - 1740), 0, 1)
+    rng = np.random.default_rng(11)
+    fase = blur(rng.random((h // 4, w // 4)).astype(np.float32), 8)
+    fase = np.asarray(Image.fromarray((fase * 255).astype(np.uint8)).resize((w, h), Image.BILINEAR)).astype(np.float32) / 255 * TAU * 3
+    luz = blur(np.clip((a.mean(2) - 110) / 90, 0, 1), 4) * m
+
+    def f(t):
+        ph = TAU * t
+        dx = (np.sin(yy / (7 + 18 * prof) + ph * 2 + fase) * (0.6 + 2.8 * prof)
+              + np.sin(yy / 40 - xx / 260 + ph + fase * 0.5) * 1.4 * prof) * m
+        dy = np.sin(xx / 70 + yy / 30 + ph + fase) * 0.9 * prof * m
+        out = remap(a, dx, dy) * (1 + 0.05 * np.sin(xx / 30 + yy / 14 + ph * 2 + fase)[..., None] * luz[..., None])
+        im = Image.fromarray(np.clip(out, 0, 255).astype(np.uint8)).resize((1080, 1920), Image.LANCZOS)
+        return np.asarray(im).astype(np.float32)
+    write('3d-canal', f, (1080, 1920))
+
+
 if __name__ == '__main__':
-    for fn in (agua, rede, neon):
-        fn()
+    todos = {'agua': agua, 'rede': rede, 'neon': neon, 'canal': canal}
+    for nome in (sys.argv[3:] or todos):
+        todos[nome]()
