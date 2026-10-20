@@ -370,6 +370,90 @@ main,
     line-height: 1.45;
 }
 
+/* O canal da piscina natural do Jardim, um cinemagraph: só a água se mexe.
+   No celular ele vem depois dos botões, para o título continuar sendo a
+   primeira coisa lida. A largura de 26rem é a da coluna que ele ocupa ao
+   lado do texto no desktop, e serve igual como limite quando empilha. */
+.hero-midia {
+    max-width: 26rem;
+    margin: 0 auto var(--e-7);
+}
+
+/* A moldura reserva o 4:5 antes de qualquer coisa carregar, então nem a foto
+   nem o vídeo empurram o layout ao chegar. O vídeo entra por cima da foto,
+   transparente, e só aparece quando começa a tocar: não há quadro preto
+   entre uma e outro. */
+.hero-quadro {
+    position: relative;
+    aspect-ratio: 4 / 5;
+    overflow: hidden;
+    background: var(--fio);
+}
+
+.hero-quadro img,
+.hero-quadro video {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+}
+
+.hero-quadro video {
+    opacity: 0;
+    transition: opacity 0.8s ease;
+}
+
+.hero-quadro video.tocando {
+    opacity: 1;
+}
+
+.hero-midia figcaption {
+    margin-top: var(--e-3);
+    font-size: var(--t-xs);
+    letter-spacing: var(--ls-rotulo);
+    text-transform: uppercase;
+    color: var(--tinta-suave);
+    text-align: left;
+}
+
+/* Lado a lado só quando cabe: com 1120px de largura total, o texto fica com
+   640px, o bastante para o título de 44px quebrar em duas ou três linhas,
+   e o canal com os 416px que a foto de 960px cobre em tela retina. */
+@media (min-width: 1041px) {
+    .hero {
+        max-width: var(--largura-total);
+        display: grid;
+        grid-template-columns: minmax(0, 1fr) 26rem;
+        column-gap: var(--e-8);
+        align-items: center;
+        text-align: left;
+    }
+
+    .hero .logo {
+        margin: 0 0 var(--e-6);
+    }
+
+    .hero-sub {
+        margin-left: 0;
+    }
+
+    .hero-acoes {
+        justify-content: flex-start;
+        margin-bottom: 0;
+    }
+
+    .hero-midia {
+        margin: 0;
+    }
+
+    .provas {
+        grid-column: 1 / -1;
+        margin-top: var(--e-7);
+    }
+}
+
 /* --------------------------------------------------------------------------
    Botões
    -------------------------------------------------------------------------- */
@@ -2046,6 +2130,7 @@ footer {
     .skip-link,
     .trio-fotos,
     .faixa-foto,
+    .hero-midia,
     .destaques,
     .apresentacao img,
     .hero-acoes,

@@ -4,3 +4,8 @@ Thumbs.db
 _site/
 .jekyll-cache/
 .jekyll-metadata
+# Material do acervo do Jardim da Amazônia, baixado do Drive. Fica fora do
+# repositório, que é público; ver motion/README.md para a origem de cada arquivo.
+motion/src/acervo/
+motion/src/mudo/
+motion/videos/*-preview.mp4

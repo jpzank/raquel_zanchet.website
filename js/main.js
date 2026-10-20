@@ -45,3 +45,45 @@ if (nav) {
         });
     }, { passive: true });
 }
+
+// Cinemagraph do topo da home.
+// A foto parada já está na página. O vídeo só é criado aqui, e só quando o
+// movimento é bem-vindo: quem pediu menos movimento no sistema, ou ativou a
+// economia de dados, fica com a foto e não baixa nada. Ele entra transparente
+// e aparece quando começa a tocar, para não piscar preto por cima da foto, e
+// pausa fora da tela para não gastar bateria rodando onde ninguém vê.
+const midia = document.querySelector('.hero-midia[data-video]');
+const semMovimento = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+const poupaDados = navigator.connection && navigator.connection.saveData;
+
+if (midia && !semMovimento && !poupaDados) {
+    const video = document.createElement('video');
+    video.muted = true;
+    video.loop = true;
+    video.playsInline = true;
+    video.preload = 'auto';
+    video.setAttribute('aria-hidden', 'true');
+    // MP4 primeiro, que toca em quase tudo; o WebM cobre o Chromium sem H.264.
+    // O navegador fica com a primeira fonte que sabe tocar.
+    for (const [ext, tipo] of [['mp4', 'video/mp4'], ['webm', 'video/webm']]) {
+        const fonte = document.createElement('source');
+        fonte.src = `${midia.dataset.video}.${ext}`;
+        fonte.type = tipo;
+        video.appendChild(fonte);
+    }
+    video.addEventListener('playing', () => video.classList.add('tocando'), { once: true });
+    midia.querySelector('.hero-quadro').appendChild(video);
+
+    // play() devolve uma promessa que é rejeitada quando o navegador bloqueia
+    // a reprodução automática. Nesse caso a foto continua ali, sem erro.
+    const tocar = () => video.play().catch(() => {});
+
+    if ('IntersectionObserver' in window) {
+        new IntersectionObserver(([entrada]) => {
+            if (entrada.isIntersecting) tocar();
+            else video.pause();
+        }).observe(midia);
+    } else {
+        tocar();
+    }
+}

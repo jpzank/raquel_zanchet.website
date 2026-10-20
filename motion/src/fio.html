@@ -1,0 +1,124 @@
+<!doctype html>
+<html><head><meta charset="utf-8">
+<link rel="stylesheet" href="fonts/fonts.css">
+<style>
+  html, body { margin: 0; background: #fff; overflow: hidden; }
+  #stage { position: relative; width: 1280px; height: 720px; }
+  canvas, svg { position: absolute; left: 0; top: 0; }
+  #logo { left: 50%; top: 300px; width: 560px; height: auto; transform: translateX(-50%); overflow: visible; }
+  .cap { position: absolute; color: #666; opacity: 0; white-space: nowrap; }
+  #ano { font-family: 'Cormorant Garamond', serif; font-size: 38px; color: #333; left: 80px; }
+  #rot { font-family: 'Jost', sans-serif; font-weight: 300; font-size: 15px; letter-spacing: 0.18em; text-transform: uppercase; right: 80px; }
+  #tag { font-family: 'Cormorant Garamond', serif; font-style: italic; font-size: 30px; left: 0; right: 0; text-align: center; top: 470px; }
+</style></head>
+<body><div id="stage">
+<canvas id="c" width="1280" height="720"></canvas>
+<div id="ano" class="cap"></div><div id="rot" class="cap"></div>
+<div id="tag" class="cap">Do conceito à operação.</div>
+</div>
+<script>
+const W = 1280, H = 720, MARCA = '#965454';
+const BW = 1120, BH = 266, BX = (W - BW) / 2, BY = 196;   // a faixa: a largura-total do site
+const LY = BY + BH / 2;                                    // linha do fio, centro da faixa
+const ease = t => t < 0.5 ? 4 * t * t * t : 1 - Math.pow(-2 * t + 2, 3) / 2;
+const clamp = (x, a = 0, b = 1) => Math.min(b, Math.max(a, x));
+const seg = (t, a, b) => clamp((t - a) / (b - a));
+
+// Cronológico. Cada imagem nasce do fio e volta para ele.
+const SHOTS = [
+  { src: '../../images/jardim-amazonia-lodge-1280.webp', a: 2.6, b: 7.4, ano: '1997', rot: 'Jardim da Amazônia, Mato Grosso', z: [1.10, 1.03], py: [0.06, -0.06] },
+  { src: '../../images/zank-hotel-1280.webp', a: 7.4, b: 11.9, ano: '2007', rot: 'Zank Hotel Boutique, Salvador', z: [1.02, 1.09], px: [0.03, -0.03] },
+  { src: '../../images/card-projetos-1199.webp', a: 11.9, b: 16.2, ano: '2011', rot: 'Prêmio Casa Claudia, Hotéis', z: [1.08, 1.02], fy: 0.42 },
+  { src: '../../images/collab-joel-reis-tecelagem-879.webp', a: 16.2, b: 20.5, ano: '2018', rot: 'Collab, Joel Reis Tecelagem', z: [1.0, 1.06], px: [-0.03, 0.03] },
+  { src: '../../images/collab-amazonia-por-um-fio-1280.webp', a: 20.5, b: 25.2, ano: '2021', rot: 'Collab, Amazônia por um Fio', z: [1.04, 1.12], px: [0.02, -0.02] },
+];
+const OPEN = 1.0, CLOSE = 0.75;
+
+const cv = document.getElementById('c'), cx = cv.getContext('2d');
+const ano = document.getElementById('ano'), rot = document.getElementById('rot'), tag = document.getElementById('tag');
+let logo, paths = [];
+
+function load(src) { return new Promise(r => { const i = new Image(); i.onload = () => r(i); i.src = src; }); }
+
+window.ready = (async () => {
+  await document.fonts.load('34px "Cormorant Garamond"');
+  await document.fonts.load('italic 30px "Cormorant Garamond"');
+  await document.fonts.load('300 14px Jost');
+  for (const s of SHOTS) s.img = await load(s.src);
+  const txt = await (await fetch('../../images/logo-raquel-zanchet.svg')).text().catch(() => null);
+  const holder = document.createElement('div');
+  holder.innerHTML = txt || '';
+  logo = holder.querySelector('svg');
+  logo.id = 'logo';
+  logo.removeAttribute('width'); logo.removeAttribute('height');
+  logo.style.height = (560 * 84 / 366) + 'px';
+  document.getElementById('stage').appendChild(logo);
+  paths = [...logo.querySelectorAll('path')];
+  paths.forEach(p => { p.setAttribute('pathLength', '1'); p.setAttribute('stroke', p.parentNode.getAttribute('fill')); p.setAttribute('stroke-width', '0.35'); p.setAttribute('stroke-dasharray', '1 1'); });
+})();
+
+function drawImg(s, k, h) {
+  // cover-fit na faixa, com deriva lenta
+  const img = s.img, z = s.z[0] + (s.z[1] - s.z[0]) * k;
+  const sc = Math.max(BW / img.width, BH / img.height) * z;
+  const iw = img.width * sc, ih = img.height * sc;
+  const px = s.px ? s.px[0] + (s.px[1] - s.px[0]) * k : 0;
+  const py = s.py ? s.py[0] + (s.py[1] - s.py[0]) * k : 0;
+  const fy = s.fy ?? 0.5;
+  const x = BX + (BW - iw) / 2 + px * BW;
+  const y = BY + (BH - ih) * fy + py * BH;
+  cx.save();
+  cx.beginPath(); cx.rect(BX, LY - h / 2, BW, h); cx.clip();
+  cx.drawImage(img, x, y, iw, ih);
+  cx.restore();
+}
+
+function line(x0, x1, y, alpha = 1) {
+  cx.save(); cx.globalAlpha = alpha; cx.fillStyle = MARCA;
+  cx.fillRect(Math.round(x0), Math.round(y), Math.max(0, x1 - x0), 1.5);
+  cx.restore();
+}
+
+window.seek = t => {
+  cx.fillStyle = '#fff'; cx.fillRect(0, 0, W, H);
+  ano.style.opacity = rot.style.opacity = 0;
+
+  // 0 a 2.6s: o fio se desenha da esquerda, a partir do branco
+  if (t < SHOTS[0].a) {
+    const k = ease(seg(t, 0.4, 2.5));
+    line(BX, BX + BW * k, LY);
+  }
+
+  for (const s of SHOTS) {
+    if (t < s.a || t >= s.b) continue;
+    const local = t - s.a, dur = s.b - s.a;
+    const o = ease(seg(local, 0, OPEN)), c = ease(seg(local, dur - CLOSE, dur));
+    const h = BH * o * (1 - c);
+    drawImg(s, local / dur, h);
+    if (h < BH - 0.5) line(BX, BX + BW, LY - 0.75, 1 - Math.min(1, h / 40));
+    const cap = seg(local, OPEN * 0.6, OPEN + 0.5) * (1 - seg(local, dur - CLOSE - 0.5, dur - CLOSE));
+    const top = BY + BH + 30 + (1 - cap) * 6;
+    ano.textContent = s.ano; rot.textContent = s.rot;
+    ano.style.top = (top - 6) + 'px'; rot.style.top = (top + 6) + 'px';
+    ano.style.opacity = rot.style.opacity = cap;
+  }
+
+  // 25.2s em diante: o fio se recolhe até a largura do logo e o desenha
+  const L = SHOTS[SHOTS.length - 1].b;
+  const lw = 560, lx = (W - lw) / 2, ly = 300 + (560 * 84 / 366) * 0.57;
+  if (t >= L) {
+    const m = ease(seg(t, L, L + 1.1));
+    const x0 = BX + (lx - BX) * m, x1 = BX + BW + (lx + lw - BX - BW) * m, y = LY + (ly - LY) * m;
+    line(x0, x1, y, 1 - seg(t, L + 1.6, L + 2.4));
+  }
+  const d = seg(t, L + 0.9, L + 3.0);
+  paths.forEach((p, i) => {
+    const k = ease(clamp(d * 1.6 - (i / paths.length) * 0.6));
+    p.setAttribute('stroke-dashoffset', String(1 - k));
+    p.setAttribute('stroke-opacity', String(k > 0 ? 1 : 0));
+  });
+  if (logo) logo.querySelectorAll('g').forEach(g => g.setAttribute('fill-opacity', String(ease(seg(t, L + 2.2, L + 3.2)))));
+  tag.style.opacity = ease(seg(t, L + 3.0, L + 3.8));
+  tag.style.transform = `translateY(${(1 - ease(seg(t, L + 3.0, L + 3.8))) * 6}px)`;
+};
+</script></body></html>
