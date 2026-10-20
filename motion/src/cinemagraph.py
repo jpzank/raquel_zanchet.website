@@ -173,5 +173,6 @@ def canal_home():
 
 if __name__ == '__main__':
     todos = {'agua': agua, 'rede': rede, 'neon': neon, 'canal': canal, 'home': canal_home}
-    for nome in (sys.argv[3:] or todos):
+    # sem nome, saem os quatro loops; o recorte da home só sai quando pedido
+    for nome in (sys.argv[3:] or ['agua', 'rede', 'neon', 'canal']):
         todos[nome]()
